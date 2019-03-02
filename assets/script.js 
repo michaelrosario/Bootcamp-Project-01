@@ -55,7 +55,7 @@
     console.log("The read failed: " + errorObject.code)
   };
 
-  $("#submit-status").on("click", function {
+  $("#submit-status").on("click", function(event) {
     event.preventDefault();
     var userName = $("#user-name").val().trim();
     var userStatus = $("#status").val().trim();
