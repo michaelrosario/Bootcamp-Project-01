@@ -64,6 +64,9 @@
     <script>
 
     var map;
+    var infowindow;
+    var service;
+    var loadedMarkers = [];
   
     function initMap() {
       
@@ -259,7 +262,6 @@
           styles: jsonStyle,
       });
 
-
       //SEARCH
       var input = document.getElementById("search");
       var autocomplete = new google.maps.places.Autocomplete(input);
@@ -293,6 +295,14 @@
 
       });
       
+      // QUERY
+      searchArea(nyc);
+
+      map.addListener("center_changed", function() {
+        searchArea(map.center);
+      });
+        
+
       //QUERY STRING
       var urlParams = new URLSearchParams(window.location.search);
       var lat = urlParams.get('lat');
@@ -316,6 +326,65 @@
     map.panTo(center);      
   }
 
+  function searchArea(place){
+    var request = {
+          location: place,
+          keyword: 'coffee',
+          radius: '1000',
+          fields: ['name', 'geometry'],
+        };
+      /* LIMIT TO FIELDS NEEDED LATER */
+      infowindow = new google.maps.InfoWindow();
+
+      service = new google.maps.places.PlacesService(map);
+
+      service.nearbySearch(request, function(results, status) {
+  
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            for (var i = 0; i < results.length; i++) {
+              if(loadedMarkers.indexOf(results[i].id) === -1){
+                console.log(results[i]);
+                loadedMarkers.push(results[i]);
+                createMarker(results[i]);
+              }
+            }
+          }
+      });
+  }
+
+  var activeInfoWindow;
+  function createMarker(place) {
+    var marker = new google.maps.Marker({
+      map: map,
+      position: place.geometry.location
+    });
+
+    google.maps.event.addListener(marker, 'click', function() {
+      
+  
+      console.log(JSON.stringify(place));
+      if (infowindow) {
+        infowindow.close();
+      }
+
+      if (activeInfoWindow) {
+        activeInfoWindow.close();
+      }
+
+      infowindow.setContent(`
+        <strong>${place.name}</strong> <br>
+        ${place.vicinity}<br>
+        ${place.rating ? `Rating: ${place.rating}` : ''} <br>
+        ${place.opening_hours && place.opening_hours.open_now ? `
+          Currently Open<br>
+          <a href="#" class="button check-in" data-id="${place.id}">Check In</a>`  : 'Currently Closed'}<br>
+        
+      `);
+      activeInfoWindow = infowindow;
+      infowindow.open(map, this);
+
+    });
+  }
 
     
 
