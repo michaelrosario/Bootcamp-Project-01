@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Place Autocomplete</title>
+    <title>Search - Work Rimot</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <style>
@@ -23,6 +23,8 @@
         padding: 0;
       }
 
+      /*
+
       header { 
         background: rgba(255,255,255,0.9);
         position: fixed; 
@@ -39,39 +41,47 @@
              font-size: 29px;
 
         }
+      */
     
     </style>
   </head>
   <body>
 
+   
     <header>
-
-<a class="Logo" href="/">
-<svg width="88px" height="27px" viewBox="0 0 88 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Helvetica" font-size="35.046729" font-weight="normal">
-        <g id="rimot-logo" transform="translate(-3.000000, -9.000000)" fill="#000000">
-            <text id="Rimot">
-                <tspan x="0.232943925" y="34.2189252">Rimot</tspan>
-            </text>
-        </g>
-    </g>
-</svg>
-</a>
+        <a class="Logo" href="/">
+        <svg width="88px" height="27px" viewBox="0 0 88 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Helvetica" font-size="35.046729" font-weight="normal">
+                <g id="rimot-logo" transform="translate(-3.000000, -9.000000)" fill="#000000">
+                    <text id="Rimot">
+                        <tspan x="0.232943925" y="34.2189252">Rimot</tspan>
+                    </text>
+                </g>
+            </g>
+        </svg>
+        </a>
         <input id="search" type="text"
             placeholder="Enter a location">
     </header>
 
     <div id="map"></div>
     
-
     <script>
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"
-
+      
+      var urlParams = new URLSearchParams(window.location.search);
+      var query = urlParams.get('q');
+      
+      if(query){
+        console.log("query",query);
+        $("#search").val(query).parent().submit();
+      }
+  
       function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 40.7753313, lng: -73.9687344},
+          center: { lat: 40.7753313, lng: -73.9687344 },
           styles: stylesJason,
           zoom: 13
         });
@@ -81,9 +91,8 @@
         var strictBounds = document.getElementById('strict-bounds-selector');
 
         map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-
         var autocomplete = new google.maps.places.Autocomplete(input);
-
+        
         // Bind the map's bounds (viewport) property to the autocomplete object,
         // so that the autocomplete requests use the current map bounds for the
         // bounds option in the request.
@@ -93,7 +102,7 @@
         autocomplete.setFields(
             ['address_components', 'geometry', 'icon', 'name']);
 
-        //var infowindow = new google.maps.InfoWindow();
+        //var infowindow = new google.maps.InfoWindow();                                                                                                                        
         //var infowindowContent = document.getElementById('infowindow-content');
         //infowindow.setContent(infowindowContent);
         var marker = new google.maps.Marker({
@@ -148,7 +157,7 @@
             });
       }
 
-      var stylesJason = [
+  var stylesJason = [
   {
     "featureType": "all",
     "elementType": "geometry",
@@ -331,6 +340,8 @@
     ]
   },
 ];
+
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places&callback=initMap"
         async defer></script>
