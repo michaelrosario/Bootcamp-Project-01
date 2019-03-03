@@ -29,7 +29,7 @@
         position: fixed; 
         top: 0px; 
         width: 100%;
-        z-index: 999999;
+        z-index: 1;
         height: 62px;
     }
 
@@ -39,8 +39,11 @@
             width: 50%; margin: 10px 15px 0 0;
             height: 40px; padding: 10px;
              font-size: 19px;
+             z-index: 9999;
+             position: relative;
 
         }
+        
     
     
     </style>
@@ -55,8 +58,11 @@
         <a class="Logo" href="/">
         <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
         </a>
-        <input id="search" type="text"
+        <div class="search-container">
+          <input id="search" type="text"
             placeholder="Enter a location">
+        </div>
+        
     </header>
 
     <div id="map"></div>
@@ -285,10 +291,13 @@
             console.log(place.geometry.viewport);
           } else {
             map.setCenter(place.geometry.location);
-            console.log(place.geometry.location);
-            map.setZoom(17);  // Why 17? Because it looks good.
+            console.log(place.geometry.location)
           }
-          console.log("place",place);
+          map.setZoom(15);
+          searchArea({
+            lat: place.geometry.location.lat(),
+            lng: place.geometry.location.lng()
+          });
           console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
           marker.setPosition(place.geometry.location);
           marker.setVisible(false);
