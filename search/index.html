@@ -9,9 +9,10 @@
       * { 
             box-sizing: border-box;
         }
-        .Logo { margin: 6px 0 0 0; float: left; }
+      .Logo { float: left; color: #FFF; width: 100%; margin: 16px 0 0 30px; max-width: 115px; }
 
       #map {
+        margin-top: 62px;
         height: 100%;
         z-index: 1;
         width: 100%;
@@ -23,42 +24,36 @@
         padding: 0;
       }
 
-      /*
-
       header { 
-        background: rgba(255,255,255,0.9);
+        background: rgba(37,42,51,0.9);
         position: fixed; 
-        top: 10px; 
+        top: 0px; 
         width: 100%;
         z-index: 999999;
-        padding: 20px;
+        height: 62px;
     }
 
         #search {
             float: right;
-            width: 80%; margin: 0 auto;
+            border-radius: 5px;
+            width: 50%; margin: 10px 15px 0 0;
             height: 40px; padding: 10px;
-             font-size: 29px;
+             font-size: 19px;
 
         }
-      */
+    
     
     </style>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places&callback=initMap"
+        async defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
 
    
     <header>
         <a class="Logo" href="/">
-        <svg width="88px" height="27px" viewBox="0 0 88 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="Helvetica" font-size="35.046729" font-weight="normal">
-                <g id="rimot-logo" transform="translate(-3.000000, -9.000000)" fill="#000000">
-                    <text id="Rimot">
-                        <tspan x="0.232943925" y="34.2189252">Rimot</tspan>
-                    </text>
-                </g>
-            </g>
-        </svg>
+        <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
         </a>
         <input id="search" type="text"
             placeholder="Enter a location">
@@ -67,283 +62,270 @@
     <div id="map"></div>
     
     <script>
-      // This example requires the Places library. Include the libraries=places
-      // parameter when you first load the API. For example:
-      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"
-      
-      var urlParams = new URLSearchParams(window.location.search);
-      var query = urlParams.get('q');
-      
-      if(query){
-        console.log("query",query);
-        $("#search").val(query).parent().submit();
-      }
+
+    var map;
   
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: { lat: 40.7753313, lng: -73.9687344 },
-          styles: stylesJason,
-          zoom: 13
-        });
-        var card = document.getElementById('pac-card');
-        var input = document.getElementById('search');
-        var types = document.getElementById('type-selector');
-        var strictBounds = document.getElementById('strict-bounds-selector');
+    function initMap() {
+      
+      var nyc = {
+        lat: 40.7794406, 
+        lng: -73.965438
+      };
+      
+      var customMapTypeId = 'custom_style';
 
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
-        var autocomplete = new google.maps.places.Autocomplete(input);
-        
-        // Bind the map's bounds (viewport) property to the autocomplete object,
-        // so that the autocomplete requests use the current map bounds for the
-        // bounds option in the request.
-        autocomplete.bindTo('bounds', map);
+      var jsonStyle = [
+          {
+              "featureType": "water",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#e9e9e9"
+                  },
+                  {
+                      "lightness": 17
+                  }
+              ]
+          },
+          {
+              "featureType": "landscape",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#f5f5f5"
+                  },
+                  {
+                      "lightness": 20
+                  }
+              ]
+          },
+          {
+              "featureType": "road.highway",
+              "elementType": "geometry.fill",
+              "stylers": [
+                  {
+                      "color": "#ffffff"
+                  },
+                  {
+                      "lightness": 17
+                  }
+              ]
+          },
+          {
+              "featureType": "road.highway",
+              "elementType": "geometry.stroke",
+              "stylers": [
+                  {
+                      "color": "#ffffff"
+                  },
+                  {
+                      "lightness": 29
+                  },
+                  {
+                      "weight": 0.2
+                  }
+              ]
+          },
+          {
+              "featureType": "road.arterial",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#ffffff"
+                  },
+                  {
+                      "lightness": 18
+                  }
+              ]
+          },
+          {
+              "featureType": "road.local",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#ffffff"
+                  },
+                  {
+                      "lightness": 16
+                  }
+              ]
+          },
+          {
+              "featureType": "poi",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#f5f5f5"
+                  },
+                  {
+                      "lightness": 21
+                  }
+              ]
+          },
+          {
+              "featureType": "poi.park",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#dedede"
+                  },
+                  {
+                      "lightness": 21
+                  }
+              ]
+          },
+          {
+              "elementType": "labels.text.stroke",
+              "stylers": [
+                  {
+                      "visibility": "on"
+                  },
+                  {
+                      "color": "#ffffff"
+                  },
+                  {
+                      "lightness": 16
+                  }
+              ]
+          },
+          {
+              "elementType": "labels.text.fill",
+              "stylers": [
+                  {
+                      "saturation": 36
+                  },
+                  {
+                      "color": "#333333"
+                  },
+                  {
+                      "lightness": 40
+                  }
+              ]
+          },
+          {
+              "elementType": "labels.icon",
+              "stylers": [
+                  {
+                      "visibility": "off"
+                  }
+              ]
+          },
+          {
+              "featureType": "transit",
+              "elementType": "geometry",
+              "stylers": [
+                  {
+                      "color": "#f2f2f2"
+                  },
+                  {
+                      "lightness": 19
+                  }
+              ]
+          },
+          {
+              "featureType": "administrative",
+              "elementType": "geometry.fill",
+              "stylers": [
+                  {
+                      "color": "#fefefe"
+                  },
+                  {
+                      "lightness": 20
+                  }
+              ]
+          },
+          {
+              "featureType": "administrative",
+              "elementType": "geometry.stroke",
+              "stylers": [
+                  {
+                      "color": "#fefefe"
+                  },
+                  {
+                      "lightness": 17
+                  },
+                  {
+                      "weight": 1.2
+                  }
+              ]
+          }
+      ];
+      
+      /* https://developers.google.com/maps/documentation/javascript/reference/ */
+      map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center:  nyc,
+          disableDefaultUI: true,
+          styles: jsonStyle,
+      });
 
-        // Set the data fields to return when the user selects a place.
-        autocomplete.setFields(
-            ['address_components', 'geometry', 'icon', 'name']);
 
-        //var infowindow = new google.maps.InfoWindow();                                                                                                                        
-        //var infowindowContent = document.getElementById('infowindow-content');
-        //infowindow.setContent(infowindowContent);
-        var marker = new google.maps.Marker({
+      //SEARCH
+      var input = document.getElementById("search");
+      var autocomplete = new google.maps.places.Autocomplete(input);
+      autocomplete.bindTo('bounds', map);
+
+      var marker = new google.maps.Marker({
           map: map,
           anchorPoint: new google.maps.Point(0, -29)
         });
 
 
-        autocomplete.addListener('place_changed', function() {
-          //infowindow.close();
-          marker.setVisible(false);
-          var place = autocomplete.getPlace();
-          if (!place.geometry) {
-            // User entered the name of a Place that was not suggested and
-            // pressed the Enter key, or the Place Details request failed.
+      autocomplete.addListener('place_changed', function() {
+        marker.setVisible(false);
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
             window.alert("No details available for input: '" + place.name + "'");
             return;
-          }
-
-          // If the place has a geometry, then present it on a map.
+        }
           if (place.geometry.viewport) {
             map.fitBounds(place.geometry.viewport);
             console.log(place.geometry.viewport);
           } else {
             map.setCenter(place.geometry.location);
-             console.log(place.geometry.location);
+            console.log(place.geometry.location);
             map.setZoom(17);  // Why 17? Because it looks good.
           }
+          console.log("place",place);
+          console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
           marker.setPosition(place.geometry.location);
           marker.setVisible(false);
-        });
 
+      });
+      
+      //QUERY STRING
+      var urlParams = new URLSearchParams(window.location.search);
+      var lat = urlParams.get('lat');
+      var lang = urlParams.get('lang');
+      var zoom = urlParams.get('zoom') || 15;
+      
+      console.log(lat+" "+lang+" "+zoom);  
 
-        // Sets a listener on a radio button to change the filter type on Places
-        // Autocomplete.
-        function setupClickListener(id, types) {
-          var radioButton = document.getElementById(id);
-          radioButton.addEventListener('click', function() {
-            autocomplete.setTypes(types);
-          });
-        }
-
-        setupClickListener('changetype-all', []);
-        setupClickListener('changetype-address', ['address']);
-        setupClickListener('changetype-establishment', ['establishment']);
-        setupClickListener('changetype-geocode', ['geocode']);
-
-        document.getElementById('use-strict-bounds')
-            .addEventListener('click', function() {
-              console.log('Checkbox clicked! New state=' + this.checked);
-              autocomplete.setOptions({strictBounds: this.checked});
-            });
+      if(lat && lang){
+        newLocation(lat,lang,zoom);
       }
 
-  var stylesJason = [
-  {
-    "featureType": "all",
-    "elementType": "geometry",
-    "stylers": [
-      {
-        "visibility": "on"
-      }
-    ]
-  },
-  {
-    "featureType": "all",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.attraction",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.attraction",
-    "elementType": "labels",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.attraction",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.business",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.government",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.medical",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.park",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.place_of_worship",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.school",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "poi.sports_complex",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "geometry.stroke",
-    "stylers": [
-      {
-        "visibility": "simplified"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "road",
-    "elementType": "labels.icon",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-  {
-    "featureType": "locality",
-    "elementType": "labels.text",
-    "stylers": [
-      {
-        "visibility": "on",
-        "color": "#CCCCCC"
-      }
-    ]
-  },
-  {
-    "featureType": "transit",
-    "elementType": "all",
-    "stylers": [
-      {
-        "visibility": "off"
-      }
-    ]
-  },
-];
+     
+  }    
+
+  function newLocation(newLat,newLng,newZoom){
+
+    var center = new google.maps.LatLng(newLat, newLng);
+  
+    map.setZoom(parseInt(newZoom));
+    map.panTo(center);      
+  }
+
+
+    
+
+      
+      
+
 
 
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places&callback=initMap"
-        async defer></script>
+
+  
   </body>
 </html>
