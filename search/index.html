@@ -47,6 +47,7 @@
     
     
     </style>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places&callback=initMap"
         async defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -72,6 +73,7 @@
     var map;
     var infowindow;
     var service;
+    var activeInfoWindow;
     var loadedMarkers = [];
   
     function initMap() {
@@ -278,7 +280,6 @@
           anchorPoint: new google.maps.Point(0, -29)
         });
 
-
       autocomplete.addListener('place_changed', function() {
         marker.setVisible(false);
         var place = autocomplete.getPlace();
@@ -334,15 +335,13 @@
     map.setZoom(parseInt(newZoom));
     map.panTo(center);      
   }
-
+  var markers = [];
   function searchArea(place){
     var request = {
           location: place,
           keyword: 'coffee',
-          radius: '1000',
-          fields: ['name', 'geometry'],
+          radius: 1000,
         };
-      /* LIMIT TO FIELDS NEEDED LATER */
       infowindow = new google.maps.InfoWindow();
 
       service = new google.maps.places.PlacesService(map);
@@ -351,49 +350,61 @@
   
           if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
-              if(loadedMarkers.indexOf(results[i].id) === -1){
+              if(!placeExists(results[i].id,loadedMarkers)){
                 console.log(results[i]);
                 loadedMarkers.push(results[i]);
-                createMarker(results[i]);
+                var position = { lat: results[i].geometry.location.lat(), lng: results[i].geometry.location.lng() };
+                var marker = new google.maps.Marker({'position': position });
+                var place = results[i];
+                
+                google.maps.event.addListener(marker, 'click', function() {
+                    
+                    console.log(JSON.stringify(place));
+                    if (infowindow) {
+                      infowindow.close();
+                    }
+
+                    if (activeInfoWindow) {
+                      activeInfoWindow.close();
+                    }
+
+                    infowindow.setContent(`
+                      <strong>${place.name}</strong> <br>
+                      ${place.vicinity}<br>
+                      ${place.rating ? `Rating: ${place.rating}` : ''} <br>
+                      ${place.opening_hours && place.opening_hours.open_now ? `
+                        Currently Open<br>
+                        <a href="#" class="button check-in" data-id="${place.id}">Check In</a>`  : 'Currently Closed'}<br>
+                      
+                    `);
+                    activeInfoWindow = infowindow;
+                    infowindow.open(map, this);
+
+                  });
+                
+                markers.push(marker);
+                //createMarker(results[i]);
+                //console.log(loadedMarkers);
+
+
               }
             }
           }
+
+          var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
       });
   }
-
-  var activeInfoWindow;
-  function createMarker(place) {
-    var marker = new google.maps.Marker({
-      map: map,
-      position: place.geometry.location
-    });
-
-    google.maps.event.addListener(marker, 'click', function() {
-      
   
-      console.log(JSON.stringify(place));
-      if (infowindow) {
-        infowindow.close();
-      }
+  
 
-      if (activeInfoWindow) {
-        activeInfoWindow.close();
-      }
-
-      infowindow.setContent(`
-        <strong>${place.name}</strong> <br>
-        ${place.vicinity}<br>
-        ${place.rating ? `Rating: ${place.rating}` : ''} <br>
-        ${place.opening_hours && place.opening_hours.open_now ? `
-          Currently Open<br>
-          <a href="#" class="button check-in" data-id="${place.id}">Check In</a>`  : 'Currently Closed'}<br>
-        
-      `);
-      activeInfoWindow = infowindow;
-      infowindow.open(map, this);
-
-    });
-  }
+// Check if id exists in our list already
+function placeExists(placeId,arr) {
+  return arr.some(function(el) {
+    return el.id === placeId;
+  }); 
+}
 
     
 
