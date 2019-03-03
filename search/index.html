@@ -73,6 +73,7 @@
     var map;
     var infowindow;
     var service;
+    var activeInfoWindow;
     var loadedMarkers = [];
   
     function initMap() {
@@ -355,7 +356,7 @@
                 var position = { lat: results[i].geometry.location.lat(), lng: results[i].geometry.location.lng() };
                 var marker = new google.maps.Marker({'position': position });
                 var place = results[i];
-                var activeInfoWindow;
+                
                 google.maps.event.addListener(marker, 'click', function() {
                     
                     console.log(JSON.stringify(place));
