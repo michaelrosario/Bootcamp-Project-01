@@ -351,11 +351,18 @@
           if (status === google.maps.places.PlacesServiceStatus.OK) {
             for (var i = 0; i < results.length; i++) {
               if(!placeExists(results[i].id,loadedMarkers)){
-                console.log(results[i]);
-                loadedMarkers.push(results[i]);
-                var position = { lat: results[i].geometry.location.lat(), lng: results[i].geometry.location.lng() };
-                var marker = new google.maps.Marker({'position': position });
                 var place = results[i];
+                loadedMarkers.push(place);
+                var position = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+                var marker = new google.maps.Marker({
+                    'position': position,
+                    name: place.name,
+                    vicinity: place.vicinity,
+                    rating: place.rating,
+                    opening_hours: place.opening_hours,
+                    id: place.id
+                  });
+                
                 
                 google.maps.event.addListener(marker, 'click', function() {
                     
@@ -369,12 +376,12 @@
                     }
 
                     infowindow.setContent(`
-                      <strong>${place.name}</strong> <br>
-                      ${place.vicinity}<br>
-                      ${place.rating ? `Rating: ${place.rating}` : ''} <br>
-                      ${place.opening_hours && place.opening_hours.open_now ? `
+                      <strong>${this.name}</strong> <br>
+                      ${this.vicinity}<br>
+                      ${this.rating ? `Rating: ${this.rating}` : ''} <br>
+                      ${this.opening_hours && this.opening_hours.open_now ? `
                         Currently Open<br>
-                        <a href="#" class="button check-in" data-id="${place.id}">Check In</a>`  : 'Currently Closed'}<br>
+                        <a href="#" class="button check-in" data-id="${this.id}">Check In</a>`  : 'Currently Closed'}<br>
                       
                     `);
                     activeInfoWindow = infowindow;
