@@ -1,24 +1,31 @@
-
 /* ==============================================================
    GLOBAL STYLES
    ============================================================== */
 body {
-  font-family: 'Roboto', sans-serif; }
+  font-family: 'Roboto', sans-serif; 
+}
 
 h1 {
-  font-size: 72px;
+  font-size: 70px;
   color: #fff;
-  font-weight: 300; }
-  @media (max-width: 1200px) {
-    h1 {
-      font-size: 52px; } }
-  @media (max-width: 992px) {
-    h1 {
-      font-size: 40px; } }
+  font-weight: 300; 
+}
 
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 52px; 
+  } 
+}
+@media (max-width: 992px) {
+  h1 {
+    font-size: 40px; 
+  } 
+}
 h2 {
-  font-size: 47px; }
-  @media (max-width: 768px) {
+  font-size: 47px; 
+}
+
+@media (max-width: 768px) {
     h2 {
       font-size: 34px; } }
 
@@ -120,26 +127,28 @@ p {
   height: 70px; }
 
 .is-sticky {
-  background: #252a33;
+  background: rgba(37,42,51,0.9);
   opacity: 1; }
 
 .transition {
-  -webkit-transition: all 1s ease-in-out;
-  -moz-transition: all 1s ease-in-out;
-  -o-transition: all 1s ease-in-out;
-  transition: all 1s ease-in-out; }
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; 
+}
 
 .fixed {
-  border-bottom: 1px solid #636363;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out; 
+  /* border-bottom: 1px solid #636363; */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1; }
-  @media (max-width: 992px) {
-    .fixed {
-      border: none;
-      background: #252a33; } }
+  z-index: 1; 
+}
 
 .dropdown-menu {
   background: #030303; }
@@ -185,7 +194,12 @@ p {
 .slider-title_box {
   text-align: center; }
 
+.slider-content_wrap h1 {
+  text-shadow: 2px 2px 9px rgba(0,0,0,0.75);
+}
+
 .slider-content_wrap h5 {
+  text-shadow: 2px 2px 9px rgba(0,0,0,0.75);
   color:#CCDFCB;
   font-weight: 400;
   margin: 24px 0; }
@@ -451,7 +465,15 @@ p {
     -webkit-box-flex: 0;
     -webkit-flex: 0 0 100%;
     -ms-flex: 0 0 100%;
-    flex: 0 0 100%; } }
+    flex: 0 0 100%; 
+  } 
+}
+
+.category-wrap {
+  display: block; 
+  margin: 0 auto;
+  max-width: 300px;
+}
 
 .category-wrap:hover {
   text-decoration: none; }
@@ -464,6 +486,7 @@ p {
 
 .category-wrap:hover .category-img path {
   text-decoration: none;
+  stroke: #fff;
   fill: #fff;
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
@@ -474,18 +497,24 @@ p {
   text-decoration: none; }
 
 .category-block {
+  display: grid;
   margin: 0 auto;
   text-align: center;
   border: 1px solid #e5e7ef;
   padding: 30px;
+  min-height: 190px;
   margin: 0 0 30px; }
-  .category-block h6 {
+
+.category-block h6 {
     color: #3e434b;
     margin: 10px 0 0; }
 
 .category-img {
-  width: 64px;
-  height: 64px; }
+  width: 45%;
+  max-width: 64px;
+  height: auto !important; 
+  margin: auto;
+}
 
 /* ==============================================================
    ADD LISTING
