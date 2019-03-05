@@ -469,7 +469,6 @@ p {
   } 
 }
 
-
 .category-wrap {
   display: block; 
   margin: 0 auto;
@@ -487,6 +486,7 @@ p {
 
 .category-wrap:hover .category-img path {
   text-decoration: none;
+  stroke: #fff;
   fill: #fff;
   -webkit-transition: 0.3s;
   -o-transition: 0.3s;
