@@ -2,7 +2,29 @@ var map;
 var infowindow;
 var service;
 var activeInfoWindow;
+var currentMarker = {};
+var markers = [];
 var loadedMarkers = [];
+
+
+var counter = 0; // keep track of number of checkins
+var placeId = "";
+
+// FIREBASE CONFIG
+var config = {
+  apiKey: "AIzaSyDbUywd58phZolNaXoEYSvAskt2gw0QGLE",
+  authDomain: "rimot-41ba4.firebaseapp.com",
+  databaseURL: "https://rimot-41ba4.firebaseio.com",
+  projectId: "rimot-41ba4",
+  storageBucket: "",
+  messagingSenderId: "219006616621"
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
+
+var checkins = database.ref("/check-ins");
 
 function initMap() {
   
@@ -217,17 +239,17 @@ function initMap() {
     }
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);
-        console.log(place.geometry.viewport);
+        //console.log(place.geometry.viewport);
       } else {
         map.setCenter(place.geometry.location);
-        console.log(place.geometry.location)
+        //console.log(place.geometry.location)
       }
       map.setZoom(15);
       searchArea({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       });
-      console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
+      //console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
       marker.setPosition(place.geometry.location);
       marker.setVisible(false);
 
@@ -247,7 +269,7 @@ function initMap() {
   var lang = urlParams.get('lang');
   var zoom = urlParams.get('zoom') || 15;
   
-  console.log(lat+" "+lang+" "+zoom);  
+  //console.log(lat+" "+lang+" "+zoom);  
 
   if(lat && lang){
     newLocation(lat,lang,zoom);
@@ -262,7 +284,7 @@ var center = new google.maps.LatLng(newLat, newLng);
 map.setZoom(parseInt(newZoom));
 map.panTo(center);      
 }
-var markers = [];
+
 function searchArea(place){
 var request = {
       location: place,
@@ -281,19 +303,40 @@ var request = {
             var place = results[i];
             loadedMarkers.push(place);
             var position = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+            var currentIcon = {
+              path: google.maps.SymbolPath.CIRCLE,
+              scale: 6,
+              fillColor: '#8FBC8F',
+              strokeColor: '#8FBC8F'
+            };
+    
+            
+            // creating the Google Maps Marker
             var marker = new google.maps.Marker({
                 'position': position,
                 name: place.name,
                 vicinity: place.vicinity,
                 rating: place.rating,
                 opening_hours: place.opening_hours,
-                id: place.id
+                id: place.id,
+                map: map,
+                icon: currentIcon,
               });
+
+              /*database.ref('/check-ins/' + place.id).once('value').then(function(snapshot) {
+                  
+                counter = (snapshot.val() && snapshot.val().checkins) || 0;
+                if(counter > 0){
+                  updateMarker(marker);
+                }
+                
+              });
+              */
             
-            
+            // when marker is clicked
             google.maps.event.addListener(marker, 'click', function() {
                 
-                console.log(JSON.stringify(place));
+                //console.log(JSON.stringify(place));
                 if (infowindow) {
                   infowindow.close();
                 }
@@ -302,15 +345,37 @@ var request = {
                   activeInfoWindow.close();
                 }
 
-                infowindow.setContent(`
-                  <strong>${this.name}</strong> <br>
-                  ${this.vicinity}<br>
-                  ${this.rating ? `Rating: ${this.rating}` : ''} <br>
-                  ${this.opening_hours && this.opening_hours.open_now ? `
-                    Currently Open<br>
-                    <a href="#" class="button checkIn" data-id="${this.id}">Check In</a>`  : 'Currently Closed'}<br>
+                currentMarker = this;
+
+                var marker = {
+                  id : this.id,
+                  name: this.name,
+                  vicinity: this.vicinity,
+                  opening_hours: this.opening_hours,
+                  rating: this.rating,
+                };
+
+                placeId = this.id;
+                //console.log('current_place is '+placeId);
+
+                //console.log("counter outside",counter);
+                database.ref('/check-ins/' + marker.id).once('value').then(function(snapshot) {
                   
-                `);
+                  counter = (snapshot.val() && snapshot.val().checkins) || 0;
+                  //console.log("counter inside",counter);
+
+                  infowindow.setContent(`
+                    <div id="marker${marker.id}">
+                      <strong>${marker.name}</strong> <br>
+                      ${marker.vicinity}<br>
+                      ${marker.rating ? `Rating: ${marker.rating}` : ''} <br>
+                      ${marker.opening_hours && marker.opening_hours.open_now ? `
+                      Currently Open<br>
+                      <a href="#" class="button checkIn" data-id="${marker.id}">Check In [${counter}]</a>`  : 'Currently Closed'}<br>
+                    </div>
+                  `);
+                });
+            
                 activeInfoWindow = infowindow;
                 infowindow.open(map, this);
 
@@ -324,21 +389,20 @@ var request = {
           }
         }
       }
-
+/*
       var markerCluster = new MarkerClusterer(map, markers,
         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-
+*/
   });
 }
 
-
-
 // Check if id exists in our list already
 function placeExists(placeId,arr) {
-return arr.some(function(el) {
-return el.id === placeId;
+  return arr.some(function(el) {
+    return el.id === placeId;
 }); 
 }
+
 
 /*
 
@@ -352,47 +416,106 @@ var config = {
   };
   firebase.initializeApp(config);
 */
-
-
-  var config = {
-    apiKey: "AIzaSyDbUywd58phZolNaXoEYSvAskt2gw0QGLE",
-    authDomain: "rimot-41ba4.firebaseapp.com",
-    databaseURL: "https://rimot-41ba4.firebaseio.com",
-    projectId: "rimot-41ba4",
-    storageBucket: "",
-    messagingSenderId: "219006616621"
-  };
-  firebase.initializeApp(config);
-
-  var database = firebase.database();
-
- 
-  var checkins = database.ref("/check-ins");
  
   // observer
   checkins.on("value", function (snapshot) {
-    
+  /*  
     snapshot.forEach(function(items) {
       console.log(items.key);
       console.log($("#"+items.key));
     });
+  */
     
   });
 
   $(document).on('click','a.checkIn',function(){
+
     var id = $(this).attr("data-id");
     console.log("id",id);
-    database.ref("/check-ins/"+id).push({
+    counter++;
+    placeId = id;
+
+    updateMarker(currentMarker,counter);
+
+    $("#marker"+id).find(".checkIn").html(`Check In [${counter}]`);
+  
+    database.ref("/check-ins/"+id).update({
       id: id,
-      checkins: 0,
+      checkins: counter,
       timeStamp: new Date()
     });
 
-
-   
     return false;
 
   });
+
+  // We update any open markers
+  database.ref('/check-ins/').on('child_changed', function(data) {
+    console.log("checkins changed", data.key);
+    if(data.key){
+      var counter = data.val().checkins;
+      $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
+      
+      indexes = $.map(markers, function(obj, index) {
+        if(obj.id == data.key) {
+            return index;
+        }
+      });
+      
+      currentMarker = markers[indexes];
+      if(currentMarker){ updateMarker(currentMarker,counter); }
+      //console.log('indexes',indexes);
+  
+    }
+  });
+
+   // We update any open markers
+   database.ref('/check-ins/').on('child_added', function(data) {
+    console.log("checkins added", data.key);
+    if(data.key){
+      var counter = data.val().checkins;
+      $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
+      
+      indexes = $.map(markers, function(obj, index) {
+        if(obj.id == data.key) {
+            return index;
+        }
+      });
+      
+      currentMarker = markers[indexes];
+      if(currentMarker){ updateMarker(currentMarker,counter); }
+
+  
+    }
+  });
+
+
+  function updateMarker(marker,checkins){
+
+    if(marker){
+      currentMarker = marker;
+    }
+    var colorIdx = 1;
+    if(checkins >= 5){
+      colorIdx = 3;
+    }
+    if(checkins >= 10){
+      colorIdx = 0;
+    }
+
+
+    var color = ["#FF0000", "#00FF00", "#0000FF","#ffa500"];
+                
+                var icon = currentMarker.getIcon();
+                icon.fillColor = color[colorIdx];
+                icon.strokeColor = color[colorIdx];
+                colorIdx++;
+                colorIdx %= color.length;
+                currentMarker.setIcon(icon);
+  }
+
+  
+  
 
   
 /*
