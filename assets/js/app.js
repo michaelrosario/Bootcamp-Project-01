@@ -298,6 +298,9 @@ var request = {
   service.nearbySearch(request, function(results, status) {
 
       if (status === google.maps.places.PlacesServiceStatus.OK) {
+
+        var latestMarkers = []; // a smaller array set to check for what markers changed
+
         for (var i = 0; i < results.length; i++) {
           if(!placeExists(results[i].id,loadedMarkers)){
             var place = results[i];
@@ -322,17 +325,7 @@ var request = {
                 map: map,
                 icon: currentIcon,
               });
-
-              /*database.ref('/check-ins/' + place.id).once('value').then(function(snapshot) {
-                  
-                counter = (snapshot.val() && snapshot.val().checkins) || 0;
-                if(counter > 0){
-                  updateMarker(marker);
-                }
-                
-              });
-              */
-            
+              
             // when marker is clicked
             google.maps.event.addListener(marker, 'click', function() {
                 
@@ -358,12 +351,14 @@ var request = {
                 placeId = this.id;
                 //console.log('current_place is '+placeId);
 
-                //console.log("counter outside",counter);
                 database.ref('/check-ins/' + marker.id).once('value').then(function(snapshot) {
                   
-                  counter = (snapshot.val() && snapshot.val().checkins) || 0;
-                  //console.log("counter inside",counter);
-
+                  if(snapshot.exists() && snapshot.val().checkins){
+                    counter = snapshot.val().checkins;
+                  } else {
+                    counter = 0;
+                  }
+                  console.log("counter",counter);
                   infowindow.setContent(`
                     <div id="marker${marker.id}">
                       <strong>${marker.name}</strong> <br>
@@ -382,8 +377,26 @@ var request = {
               });
             
             markers.push(marker);
-            //createMarker(results[i]);
-            //console.log(loadedMarkers);
+            latestMarkers.push(marker);
+            
+            // check for latest markers that have changed
+            database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
+                if(markerData.exists() && markerData.val().checkins) {
+                  var currentCounter = markerData.val().checkins;
+                  if(parseInt(currentCounter) > 0){
+                    console.log("place exists in DB, loading.. ."+ markerData.val().id + " " + markerData.val().checkins);
+                    indexes = $.map(latestMarkers, function(obj, index) {
+                      if(obj.id == markerData.val().id) {
+                          return index;
+                      }
+                    });
+                    currentMarker = latestMarkers[indexes];
+                    if(currentMarker){ updateMarker(currentMarker,currentCounter); }
+                  }
+                }
+            });
+        
+            
 
 
           }
@@ -451,41 +464,43 @@ var config = {
 
   // We update any open markers
   database.ref('/check-ins/').on('child_changed', function(data) {
-    console.log("checkins changed", data.key);
+   
     if(data.key){
       var counter = data.val().checkins;
-      $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
+      if(parseInt(counter) > 0){
+        console.log("checkins changed", data.key);
+        $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
       
-      indexes = $.map(markers, function(obj, index) {
-        if(obj.id == data.key) {
-            return index;
-        }
-      });
-      
-      currentMarker = markers[indexes];
-      if(currentMarker){ updateMarker(currentMarker,counter); }
-      //console.log('indexes',indexes);
-  
+        indexes = $.map(markers, function(obj, index) {
+          if(obj.id == data.key) {
+              return index;
+          }
+        });
+        
+        currentMarker = markers[indexes];
+        if(currentMarker){ updateMarker(currentMarker,counter); }
+      }
     }
   });
 
    // We update any open markers
    database.ref('/check-ins/').on('child_added', function(data) {
-    console.log("checkins added", data.key);
+    
     if(data.key){
       var counter = data.val().checkins;
-      $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
+      if(parseInt(counter) > 0){
+        console.log("checkins added", data.key);
+        $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
       
-      indexes = $.map(markers, function(obj, index) {
-        if(obj.id == data.key) {
-            return index;
-        }
-      });
-      
-      currentMarker = markers[indexes];
-      if(currentMarker){ updateMarker(currentMarker,counter); }
-
-  
+        indexes = $.map(markers, function(obj, index) {
+          if(obj.id == data.key) {
+              return index;
+          }
+        });
+        
+        currentMarker = markers[indexes];
+        if(currentMarker){ updateMarker(currentMarker,counter); }
+      }
     }
   });
 
@@ -493,25 +508,27 @@ var config = {
   function updateMarker(marker,checkins){
 
     if(marker){
+      console.log("loading marker "+ marker.id);
       currentMarker = marker;
-    }
-    var colorIdx = 1;
-    if(checkins >= 5){
-      colorIdx = 3;
-    }
-    if(checkins >= 10){
-      colorIdx = 0;
-    }
+    
+      var colorIdx = 1;
+      if(checkins >= 10){
+        colorIdx = 3;
+      } else if(checkins >= 5){
+        colorIdx = 2;
+      } else if(checkins >= 1){
+        colorIdx = 1;
+      }
 
-
-    var color = ["#FF0000", "#00FF00", "#0000FF","#ffa500"];
-                
-                var icon = currentMarker.getIcon();
-                icon.fillColor = color[colorIdx];
-                icon.strokeColor = color[colorIdx];
-                colorIdx++;
-                colorIdx %= color.length;
-                currentMarker.setIcon(icon);
+      var color = ["#FF0000","#00FF00","#ffa500","#FF0000",];
+                  
+      var icon = currentMarker.getIcon();
+      icon.fillColor = color[colorIdx];
+      icon.strokeColor = color[colorIdx];
+      colorIdx++;
+      colorIdx %= color.length;
+      currentMarker.setIcon(icon);
+    }
   }
 
   
