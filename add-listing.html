@@ -9,7 +9,7 @@
     <meta name="description" content="Add your business to Rimot and get people working in your establishment" />
     <meta name="keywords" content="work, spaces, free, cafe, coffee, wifi, manhattan, new york, remote" />
 
-    <meta property="og:title" content="About Us - Work Rimot" />
+    <meta property="og:title" content="Add a Listing - Work Rimot" />
     <meta property="og:type" content="website"/>
     <meta property="og:description" content="Learn more about Rimot and the team." />
     <meta property="og:url" content="https://workrimot.com/add-listing.html" />
@@ -97,7 +97,7 @@
     <section id="parallax-header" class="masthead">
        <div class="container">
            <div class="columns col-md-12">
-                <h1 class="text-center">About Us</h1>  <!--okay-->          
+                <h1 class="text-center">Add a Listing</h1>  <!--okay-->          
             </div>
        </div>
     </section>
@@ -222,47 +222,29 @@
     <!--//END ADD LISTING -->
     <!--============================= FOOTER =============================-->
     <footer class="main-block dark-bg">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="copyright">
-                        <p>Copyright &copy;</p>
-                        <ul>
-                            <li><a href="#"><span class="ti-facebook"></span></a></li>
-                            <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
-                            <li><a href="#"><span class="ti-instagram"></span></a></li>
-                        </ul>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright 2019&copy;</p>
+                            <ul>
+                                <li><a href="#"><span class="ti-facebook"></span></a></li>
+                                <li><a href="#"><span class="ti-twitter-alt"></span></a></li>
+                                <li><a href="#"><span class="ti-instagram"></span></a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </footer>
-    <!--//END FOOTER -->
-
-
+        </footer>
+        <!--//END FOOTER -->
+    
+    
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-    <script>
-        $(window).scroll(function() {
-           
-            $("#parallax-header").css("backgroundPositionY",($(window).scrollTop())*0.5);
-            if ($(window).scrollTop() > 100) {
-
-                $('.fixed').addClass('is-sticky');
-
-            } else {
-
-                $('.fixed').removeClass('is-sticky');
-
-            };
-        });
-
-
-    </script>
-
-</body>
-
-</html>
+    <script src="./assets/js/global.js"></script>
+    
+    </body>
+    
+    </html>

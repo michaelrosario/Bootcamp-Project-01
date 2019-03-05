@@ -252,7 +252,6 @@ function initMap() {
   if(lat && lang){
     newLocation(lat,lang,zoom);
   }
-
  
 }    
 
@@ -341,6 +340,7 @@ return el.id === placeId;
 }); 
 }
 
+/*
 
 var config = {
     apiKey: "AIzaSyBEcHq4dTxqD0hbDb1hvxwrnIAEzcQr2sc",
@@ -351,7 +351,18 @@ var config = {
     messagingSenderId: "327629075049"
   };
   firebase.initializeApp(config);
+*/
 
+
+  var config = {
+    apiKey: "AIzaSyDbUywd58phZolNaXoEYSvAskt2gw0QGLE",
+    authDomain: "rimot-41ba4.firebaseapp.com",
+    databaseURL: "https://rimot-41ba4.firebaseio.com",
+    projectId: "rimot-41ba4",
+    storageBucket: "",
+    messagingSenderId: "219006616621"
+  };
+  firebase.initializeApp(config);
 
   var database = firebase.database();
 
