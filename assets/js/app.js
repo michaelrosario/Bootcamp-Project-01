@@ -277,6 +277,8 @@ function initMap() {
  
 }    
 
+
+
 function newLocation(newLat,newLng,newZoom){
 
 var center = new google.maps.LatLng(newLat, newLng);
@@ -292,6 +294,11 @@ var request = {
       radius: 1000,
     };
   infowindow = new google.maps.InfoWindow();
+
+  if(markers.length){
+    request.pagetoken = Math.floor(new Date()*1000);
+    //console.log("request.pagetoken",request.pagetoken);
+  }
 
   service = new google.maps.places.PlacesService(map);
 
