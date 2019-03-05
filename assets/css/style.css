@@ -78,7 +78,9 @@ p {
   position: inherit; }
 
 .navbar {
-  padding: .5rem 0; }
+  padding: .5rem 0; 
+  min-height: 62px;
+}
 
 .navbar-brand {
   font-size: 31px; }
@@ -88,6 +90,12 @@ p {
   .navbar-light .navbar-brand:hover {
     color: #fff; }
 
+    @media (max-width: 768px) {
+      .navbar-light .navbar-nav {
+        padding: 15px;
+        margin-top: 25px;
+      }
+    }
 .navbar-light .navbar-nav .show > .nav-link {
   color: #fff;
   font-weight: bold; }
@@ -104,17 +112,52 @@ p {
     color: #fff;
     outline: none; }
 
-.navbar-light .navbar-toggler {
-  color: #fff;
-  border-color: #fff; }
+@media (max-width: 768px) {
 
-#rimotLogo {
-  width: 11%; }
-
-@media (max-width: 992px) {
-  .navbar-nav {
-    padding: 7px 20px; }
+  .navbar-light .navbar-toggler {
+    position: absolute;
+    transition: all .09s linear;
+    right: 15px;
+    top: 14px;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    outline: none;
+    border: none;
   }
+
+  .navbar-light .navbar-toggler .line1,
+  .navbar-light .navbar-toggler .line2,
+  .navbar-light .navbar-toggler .line3 {
+    transition: all .09s linear;
+    display: inline-block;
+    height: 1px;
+    width: 30px;
+    background: #FFF;
+    position: absolute;
+    left: 0px;
+    
+  }
+  .navbar-light .navbar-toggler .line1 { top: 5px; }
+  .navbar-light .navbar-toggler .line2 { top: 15px; }
+  .navbar-light .navbar-toggler .line3 { top: 25px; }
+
+  .navbar-light .navbar-toggler.open .line1 {
+    transform: rotate(45deg);
+    top: 17px;
+  }
+  .navbar-light .navbar-toggler.open .line2 { opacity: 0; }
+  .navbar-light .navbar-toggler.open .line3 { 
+    top: 17px; 
+    transform: rotate(-45deg);
+  }
+  
+}
+
+#rimotLogo { 
+  position: absolute;
+  top: 15px;
+  float: left; color: #FFF; width: 100%; margin: 0px 0 0 0px; left: 15px; max-width: 115px;  }
 
 .nav-item {
   margin: 0 20px 0 0; }
@@ -176,9 +219,7 @@ p {
 
 .btn-outline-light {
   padding: 10px 16px; }
-  @media (max-width: 992px) {
-    .btn-outline-light {
-      width: 25%; } }
+
   @media (max-width: 768px) {
     .btn-outline-light {
       width: 30%; } }
@@ -209,39 +250,19 @@ p {
     margin: 0 !important; } }
 
 .btn-group {
+  position: relative;
   width: 100%; }
   @media (max-width: 576px) {
     .btn-group {
       display: block; } }
 
+
 .btn-group1 {
   padding: 24px;
-  width: 40%;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  border: none; }
-  @media (max-width: 576px) {
-    .btn-group1 {
-      width: 100%;
-      border-radius: 3px;
-      margin: 0 0 10px;
-      padding: 17px; } }
-
-.btn-group2 {
-  position: relative;
-  padding: 24px;
-  width: 33%;
-  border-top: none;
-  border-right: none;
-  border-bottom: none;
-  border-left: 1px solid #ccc; }
-  @media (max-width: 576px) {
-    .btn-group2 {
-      width: 100%;
-      border-radius: 3px;
-      margin: 0 0 10px;
-      padding: 17px; } }
-
+  width: 100%;
+  border-radius: 3px;
+  border: none; 
+}
 .btn-form {
   font-weight: 400;
   font-size: 18px;
@@ -288,6 +309,15 @@ p {
 /* ==============================================================
    FIND PLACES
    ============================================================== */
+
+.search-icon {
+    position: absolute;
+    top: 25px; 
+    right: 20px;
+    font-size: 24px;
+}
+  
+
 .styled-heading {
   text-align: center;
   margin: 0 0 50px; }
@@ -991,3 +1021,11 @@ footer {
   width: 100%; }
 
 /*# sourceMappingURL=style.css.map */
+
+.masthead {
+  height: 260px; padding-top: 100px;
+}
+
+#members .container {
+  min-width: 100%;
+}
