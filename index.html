@@ -100,10 +100,10 @@
                         </div>
                         <div class="row d-flex justify-content-center">
                             <div class="col-md-10">
-                                <form class="form-wrap mt-4">
+                                <form class="form-wrap mt-4" id="formSearch">
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <input type="text" placeholder="What are your looking for?" class="btn-group1">
-                                        <input type="text" placeholder="New york" class="btn-group2">
+                                        <input type="text" placeholder="What are your looking for?" class="btn-group1" id="search">
+                                        <!-- <input type="text" placeholder="New york" class="btn-group2"> -->
                                         <button type="submit" class="btn-form"><span class="icon-magnifier search-icon"></span>SEARCH<i class="pe-7s-angle-right"></i></button>
                                     </div>
                                 </form>
@@ -511,6 +511,7 @@
 
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places"></script>
     <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -529,6 +530,19 @@
             };
         });
 
+    var input = document.getElementById("search");
+    var autocomplete = new google.maps.places.Autocomplete(input);
+
+      autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        if (!place.geometry) {
+            window.alert("No details available for input: '" + place.name + "'");
+            return;
+        }
+          window.location='./search/?lat=' + place.geometry.location.lat() + '&lng=' + place.geometry.location.lng();
+          console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
+
+      });
 
     </script>
 
