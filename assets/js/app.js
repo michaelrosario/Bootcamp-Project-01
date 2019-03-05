@@ -321,6 +321,7 @@ var request = {
                 vicinity: place.vicinity,
                 rating: place.rating,
                 opening_hours: place.opening_hours,
+                price_level: place.price_level,
                 id: place.id,
                 map: map,
                 icon: currentIcon,
@@ -344,6 +345,7 @@ var request = {
                   id : this.id,
                   name: this.name,
                   vicinity: this.vicinity,
+                  price_level: this.price_level,
                   opening_hours: this.opening_hours,
                   rating: this.rating,
                 };
@@ -363,6 +365,13 @@ var request = {
                     <div id="marker${marker.id}">
                       <strong>${marker.name}</strong> <br>
                       ${marker.vicinity}<br>
+                      <div class="price">
+                      ${marker.price_level && marker.price_level === 4 ? 'Prices: $$$$' : ''}
+                      ${marker.price_level && marker.price_level === 3 ? 'Prices: $$$<span style="opacity: 0.3">$</span>' : ''}
+                      ${marker.price_level && marker.price_level === 2 ? 'Prices: $$<span style="opacity: 0.3">$$</span>' : ''}
+                      ${marker.price_level && marker.price_level === 1 ? 'Prices: $<span style="opacity: 0.3">$$$</span>' : ''}
+                      ${marker.price_level && marker.price_level === 0 ? 'Prices: <span style="opacity: 0.3">$$$$</span>' : ''}
+                      </div>
                       ${marker.rating ? `Rating: ${marker.rating}` : ''} <br>
                       ${marker.opening_hours && marker.opening_hours.open_now ? `
                       Currently Open<br>
