@@ -523,8 +523,7 @@
                 return;
             } else {
 
-                window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location
-                    .lng() + "&zoom=15";
+                window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=15&id=" + place.id;
                 console.log('place',
                     `/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
 
@@ -532,7 +531,6 @@
         });
 
         $(document).ready(function(){
-
             /*$('.add-remove').slick('slickAdd','<div><h3>' + slideIndex + '</h3></div>') */
             var request = {
                 location: {
@@ -571,7 +569,7 @@
                                             <span class="featured-rating-orange">${place.rating}</span>
                                             <div class="featured-title-box">
                                                 <h6>${place.name}</h6>
-                                                <p>${place.types[0]} </p> <span> • </span>
+                                                <p style="text-transform: capitalize;">${place.types[0]} </p> <span> • </span>
                                                 <p>
                                                     ${place.price_level && place.price_level === 4 ? 'Prices: <span>$$$$</span>' : ''}
                                                     ${place.price_level && place.price_level === 3 ? 'Prices: <span>$$$</span>$' : ''}
@@ -583,27 +581,17 @@
                                                     <li><span class="icon-location-pin"></span>
                                                         <p>${place.vicinity}</p>
                                                     </li>
-                                                    <li><span class="icon-screen-smartphone"></span>
-                                                        <p>+44 20 7336 8898</p>
-                                                    </li>
-                                                    <li><span class="icon-link"></span>
-                                                        <p>https://burgerandlobster.com</p>
-                                                    </li>
 
                                                 </ul>
                                                 <div class="bottom-icons">
                                                     <div class="closed-now">
                                                         ${place.opening_hours && place.opening_hours.open_now ? `Open Now` : `Currently Closed`}    
                                                     </div>
-                                                    <span class="ti-heart"></span>
-                                                    <span class="ti-bookmark"></span>
                                                 </div>
                                             </div>
                                         </a>
                                     </div>
-                                </div>`);
-
-                    
+                                </div>`);                   
 
                             }
                                                             

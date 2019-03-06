@@ -555,6 +555,10 @@ p {
 /* ==============================================================
   RESPONSIVE SLIDER
   =============================================================== */
+.slider-container,
+.slider-container * {
+  outline: none;
+}
 
 .slider-container {
   margin: 0 auto;
