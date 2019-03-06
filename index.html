@@ -536,9 +536,9 @@
                 return;
             } else {
     
-                window.location='./search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng()+"&zoom=15";
+                window.location='./search/index.html?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng()+"&zoom=15";
                 console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
-
+                console.log(place);
             }
         });
 

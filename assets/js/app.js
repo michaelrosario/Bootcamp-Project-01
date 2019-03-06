@@ -290,7 +290,7 @@ map.panTo(center);
 function searchArea(place){
 var request = {
       location: place,
-      keyword: 'coffee',
+      keyword: "bar",
       radius: 1000,
     };
   infowindow = new google.maps.InfoWindow();
@@ -382,15 +382,25 @@ var request = {
                       ${marker.rating ? `Rating: ${marker.rating}` : ''} <br>
                       ${marker.opening_hours && marker.opening_hours.open_now ? `
                       Currently Open<br>
-                      <a href="#" class="button checkIn" data-id="${marker.id}">Check In [${counter}]</a>`  : 'Currently Closed'}<br>
+                      <a href="#" id="btn_checkIn" class="button checkIn" data-id="${marker.id}">Check In [${counter}]</a>`  : 'Currently Closed'}<br>
                     </div>
                   `);
                 });
+            
+                //When checkIn button is clicked open div card
+            
+                    $("#btn_checkIn").on("click", function() {
+                        $("#placeCard").show();
+
+                    });
             
                 activeInfoWindow = infowindow;
                 infowindow.open(map, this);
 
               });
+            
+            
+            
             
             markers.push(marker);
             latestMarkers.push(marker);
