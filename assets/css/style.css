@@ -348,6 +348,11 @@ p {
 /* ==============================================================
    FEATURED PLACES
    ============================================================== */
+
+.featured-responsive {
+  padding: 0 10px 0 10px;
+}
+   
 .featured-place-wrap {
   background: #fff;
   margin: 0 0 30px;
@@ -481,6 +486,7 @@ p {
 /* ==============================================================
    CATEGORIES
    ============================================================== */
+
 @media (max-width: 992px) {
   .category-responsive {
     max-width: 50%;
@@ -544,6 +550,28 @@ p {
   max-width: 64px;
   height: auto !important; 
   margin: auto;
+}
+
+/* ==============================================================
+  RESPONSIVE SLIDER
+  =============================================================== */
+
+.slider-container {
+  margin: 0 auto;
+  max-width: 1280px;
+  width: 90%;
+}
+
+@media (max-width: 639px) {
+  .slider-container {
+    max-width: 400px;
+  }
+}
+
+.slick-prev:before,
+.slick-next:before
+{
+    color: #FF6A5C;
 }
 
 /* ==============================================================
