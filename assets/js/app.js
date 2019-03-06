@@ -268,13 +268,22 @@ function initMap() {
   var lat = urlParams.get('lat');
   var lang = urlParams.get('lang');
   var zoom = urlParams.get('zoom') || 15;
+  var id = urlParams.get('id');
   
   //console.log(lat+" "+lang+" "+zoom);  
 
-  if(lat && lang){
+  if(lat && lang) {
     newLocation(lat,lang,zoom);
   }
- 
+    if(id) {
+      indexes = $.map(markers, function(obj, index) {
+        if(obj.id == id) {
+            return index;
+        }
+      });
+      currentMarker = markers[indexes];
+      infowindow.open(map, currentMarker);
+    }
 }    
 
 
