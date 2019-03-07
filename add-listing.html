@@ -204,10 +204,17 @@
                                         Food/Drink
                                     </label>
                                 
-                                    <label class="form-check-label" for="form-other"></label>
-                                        <input name="amenities" value="Other" class="form-check-input" type="checkbox" id="form-other">
-                                        Other
-                                    </label>
+        <label class="form-check-label" for="form-coworking">
+                <input class="form-check-input" type="checkbox" id="form-coworking">
+                Coworking Space
+        </label>
+                
+<!--
+        <label class="form-check-label" for="form-other-2">
+                <input class="form-check-input" type="checkbox" id="form-other-2">
+                Other
+        </label>
+-->
 
                                 </div>
                             </div>
@@ -230,7 +237,53 @@
             display: block;
         }
     </style>
+<!--------------------------------------------->
+<div id="amenities" class="form-group row">
+        <div class="col-sm-12">
+            Available Amenities
+        
+            <label class="form-check-label" for="form-wifi"></label>
+                <input class="form-check-input" type="checkbox" id="form-wifi">
+                Free Wi-Fi 
+            </label>
+        
+            <label class="form-check-label" for="form-power"></label>
+                <input class="form-check-input" type="checkbox" id="form-power">
+                Power Outlets
+            </label>
+            
+            <label class="form-check-label" for="form-restroom"></label>
+                <input class="form-check-input" type="checkbox" id="form-restroom">
+                 Restrooms
+            </label>
+            
+            <label class="form-check-label" for="form-food"></label>
+                <input class="form-check-input" type="checkbox" id="form-food">
+                Food/Drink
+            </label>
+        
+<!--
+            <label class="form-check-label" for="form-other"></label>
+                <input class="form-check-input" type="checkbox" id="form-other">
+                Other
+            </label>
 
+-->
+        </div>
+    </div>
+</div>
+
+<style>
+#amenities label { display: block; }
+</style>
+<div class="row">
+    <div class="col-sm-12 text-center">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</div>
+    </form>
+                
+    </section>
    
     <!--//END CATEGORIES -->
     <!--============================= ADD LISTING =============================-->
