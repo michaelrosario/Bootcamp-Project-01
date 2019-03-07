@@ -523,14 +523,24 @@
     <script src="./assets/js/global.js"></script>
 
     <script>
+        
         var input = document.getElementById("search");
+        google.maps.event.addDomListener(input, 'keydown', function(event) { 
+            if (event.keyCode === 13) { 
+                event.preventDefault(); 
+            }
+        }); 
+        
         var autocomplete = new google.maps.places.Autocomplete(input);
 
-        autocomplete.addListener('place_changed', function () {
+        autocomplete.addListener('place_changed', function (event) {
+            if (event.keyCode === 13) { 
+                event.preventDefault(); 
+            }
             var place = autocomplete.getPlace();
             if (!place.geometry) {
                 window.alert("No details available for input: '" + place.name + "'");
-                return;
+                return event.keyCode = 40;
             } else {
 
                 window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=17&id=" + place.id;
