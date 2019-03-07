@@ -18,6 +18,7 @@ var config = {
   storageBucket: "",
   messagingSenderId: "219006616621"
 };
+
 firebase.initializeApp(config);
 
 var database = firebase.database();
@@ -225,9 +226,9 @@ function initMap() {
   autocomplete.bindTo('bounds', map);
 
   var marker = new google.maps.Marker({
-      map: map,
-      anchorPoint: new google.maps.Point(0, -29)
-    });
+    map: map,
+    anchorPoint: new google.maps.Point(0, -29)
+  });
 
   autocomplete.addListener('place_changed', function() {
     
@@ -258,6 +259,7 @@ function initMap() {
                 lat: place.geometry.location.lat(),
                 lng:place.geometry.location.lng()
               },
+              place_id: place.place_id,
               name: place.name,
               vicinity: place.vicinity,
               rating: place.rating,
@@ -268,7 +270,7 @@ function initMap() {
               icon: currentIcon,
             });
           }
-      
+      console.log('place_id',marker.place_id);
       map.setZoom(15);
       searchArea({
         lat: place.geometry.location.lat(),
@@ -322,7 +324,6 @@ function createWindow(marker) {
 
 }
 
-
 function newLocation(newLat,newLng,newZoom){
   var center = new google.maps.LatLng(newLat, newLng);
   map.setZoom(parseInt(newZoom));
@@ -373,14 +374,7 @@ var request = {
                 id: place.id,
                 map: map,
                 icon: currentIcon,
-              });
-
-            // if ID is provided, open that marker
-            var id = urlParams.get('id');
-            if(id == marker.id) {
-              //console.log(marker.id+ " " +id);
-              infowindow.open(map, marker);
-            }
+            });
               
             // when marker is clicked
             google.maps.event.addListener(marker, 'click', function() {
@@ -389,13 +383,10 @@ var request = {
                 if (infowindow) {
                   infowindow.close();
                 }
-
                 if (activeInfoWindow) {
                   activeInfoWindow.close();
                 }
-
                 currentMarker = this;
-
                 var marker = {
                   id : this.id,
                   name: this.name,
@@ -423,14 +414,23 @@ var request = {
                 infowindow.open(map, this);
 
             });
+
+            // if ID is provided, open that marker
+            var id = urlParams.get('id');
+            if(id == marker.id && placeExists(id,markers)) { 
+              activeInfoWindow = infowindow;
+              infowindow.open(map, marker);
+            } else if(id && !placeExists(id,markers)){
+              console.log("marker has not loaded");
+            }
             
             markers.push(marker);
             latestMarkers.push(marker);
             // if ID is provided, open that marker
             var id = urlParams.get('id');
             if(id == marker.id) {
-              infowindow = createWindow(marker);
-              infowindow.open(map, marker);
+              activeInfoWindow = createWindow(marker);
+              activeInfoWindow.open(map, marker);
             }
             
             // check for latest markers that have changed
@@ -485,16 +485,15 @@ var config = {
 */
  
   // observer
-  checkins.on("value", function (snapshot) {
-  /*  
+  /*  checkins.on("value", function (snapshot) {
+  
     snapshot.forEach(function(items) {
       console.log(items.key);
       console.log($("#"+items.key));
     });
-  */
-    
+  
   });
-
+*/
   $(document).on('click','a.checkIn',function(){
 
     var id = $(this).attr("data-id");
@@ -543,7 +542,7 @@ var config = {
     if(data.key){
       var counter = data.val().checkins;
       if(parseInt(counter) > 0){
-        console.log("checkins added", data.key);
+        //console.log("checkins added", data.key);
         $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
       
         indexes = $.map(markers, function(obj, index) {
@@ -584,9 +583,6 @@ var config = {
       currentMarker.setIcon(icon);
     }
   }
-
-  
-  
 
   
 /*

@@ -427,18 +427,21 @@ p {
     .featured-title-box ul li {
       list-style: none;
       color: #737882;
+      float: left; width: 100%;
+      clear: both;
+      margin: 0 0 10px 0;
       line-height: 2; }
       .featured-title-box ul li span {
-        padding: 7px 8px 0 0; }
-        @media (max-width: 1200px) {
-          .featured-title-box ul li span {
-            padding: 0 4px 0 0; } }
-        @media (max-width: 320px) {
-          .featured-title-box ul li span {
-            font-size: 12px;
-            padding: 0 2px 0 0; } }
+        float: left;
+        padding: 3px 8px 0px 0; 
+        margin: 0 0 10px 0;
+      }
       .featured-title-box ul li p {
-        margin: 0; }
+        margin: 0; 
+        line-height: 1.2em;
+        float: left;
+        width: 80%;
+      }
 
 .bottom-icons {
   padding: 15px 0 0;
@@ -447,7 +450,7 @@ p {
     float: right;
     line-height: 1;
     padding: 0 0 0 12px; }
-
+  
 .closed-now {
   color: #ff3a6d;
   font-size: 13px;
@@ -577,6 +580,7 @@ p {
 {
     color: #FF6A5C;
 }
+
 
 /* ==============================================================
    ADD LISTING

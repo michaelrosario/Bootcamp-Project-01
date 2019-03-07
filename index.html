@@ -531,75 +531,101 @@
         });
 
         $(document).ready(function(){
-            /*$('.add-remove').slick('slickAdd','<div><h3>' + slideIndex + '</h3></div>') */
-            var request = {
-                location: {
-                    lat: 40.7794406, 
-                    lng: -73.965438
-                },
-                keyword: 'coffee',
-                radius: 1000,
-            };
-
-            service = new google.maps.places.PlacesService($('#map').get(0));
-
-            service.nearbySearch(request, function(results, status) {
-                //$('.responsiveRow').html('').slick('reInit');
-                if (status === google.maps.places.PlacesServiceStatus.OK) {
-
-                    var latestMarkers = []; // a smaller array set to check for what markers changed
-
-                    for (var i = 0; i < results.length; i++) {
-                            var place = results[i];
-                            console.log(place);
-
-                            if(place.photos.length && place.name){
-                                
-                                var photo = place.photos[0].getUrl({'maxWidth': 300, 'maxHeight': 300});
-
-                                $('.responsiveRow').slick('slickAdd',`
-                                <div class="featured-responsive">
-                                    <div class="featured-place-wrap">
-                                        <a href="/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}&zoom=17&id=${place.id}">
-                                            
-                                            <span style="background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
-                                            <img src="assets/images/featured3.jpg" style="opacity: 0;" class="img-fluid" alt="image ${i}" />
-                                            </span>
-
-                                            <span class="featured-rating-orange">${place.rating}</span>
-                                            <div class="featured-title-box">
-                                                <h6>${place.name}</h6>
-                                                <p style="text-transform: capitalize;">${place.types[0]} </p> <span> • </span>
-                                                <p>
-                                                    ${place.price_level && place.price_level === 4 ? 'Prices: <span>$$$$</span>' : ''}
-                                                    ${place.price_level && place.price_level === 3 ? 'Prices: <span>$$$</span>$' : ''}
-                                                    ${place.price_level && place.price_level === 2 ? 'Prices: <span>$$</span>$$' : ''}
-                                                    ${place.price_level && place.price_level === 1 ? 'Prices: <span>$</span>$$$' : ''}
-                                                    ${place.price_level && place.price_level === 0 ? 'Prices: $$$$' : ''}
-                                                </p>
-                                                <ul>
-                                                    <li><span class="icon-location-pin"></span>
-                                                        <p>${place.vicinity}</p>
-                                                    </li>
-
-                                                </ul>
-                                                <div class="bottom-icons">
-                                                    <div class="closed-now">
-                                                        ${place.opening_hours && place.opening_hours.open_now ? `Open Now` : `Currently Closed`}    
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>`);                   
-
-                            }
-                                                            
-                    };
-                };
-            });
     
+            var recommendedPlaces = [
+                'ChIJZ9aRM8dYwokRzIfuGYNVasM',
+                'ChIJz_BNjohYwokRjo68GTMP6zY',
+                'ChIJ_dckWptZwokR_LkU9WxPNZ4',
+                'ChIJHy0ZlqNZwokRABxBCQR_37o',
+                'ChIJoWoj3YNZwokROOadcIr5tXo',
+                'ChIJQwtmq3v2wokRNOjx5cEBhXg',
+                'ChIJM77SlaFZwokRUdDxtDv9560',
+                'ChIJaz4QVx32wokRfpu9QxuGV-w'
+            ];
 
+            //shuffle(recommendedPlaces);
+
+            for(var i = 0; i < recommendedPlaces.length; i++){
+                createRecommendedCards(recommendedPlaces[i]);
+            }
+
+            function createRecommendedCards(placeId) {
+                var request = {
+                    placeId: placeId,
+                };
+                var service = new google.maps.places.PlacesService($("#map").get(0));
+                service.getDetails(request, function(place, status) {
+                    if (status === google.maps.places.PlacesServiceStatus.OK) {
+                        console.log("place",place);
+                        if(place.photos.length && place.name){
+                                
+                            var photo = place.photos[0].getUrl({'maxWidth': 300, 'maxHeight': 300});
+
+                            $('.responsiveRow').slick('slickAdd',`
+                            <div class="featured-responsive">
+                                <div class="featured-place-wrap">
+                                    <a href="/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}&zoom=17&id=${place.id}">
+                                        
+                                        <span style="background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
+                                        <img src="assets/images/featured3.jpg" style="opacity: 0;" class="img-fluid" alt="image ${i}" />
+                                        </span>
+
+                                        <span class="featured-rating-orange">${place.rating}</span>
+                                        <div class="featured-title-box">
+                                            <h6>${place.name}</h6>
+                                            <p style="text-transform: capitalize;">${place.types[0]} </p> 
+                                            <p>
+                                                ${place.price_level && place.price_level === 4 ? ' <span> • </span>  Prices: <span>$$$$</span>' : ''}
+                                                ${place.price_level && place.price_level === 3 ? ' <span> • </span>  Prices: <span>$$$</span>$' : ''}
+                                                ${place.price_level && place.price_level === 2 ? ' <span> • </span>  Prices: <span>$$</span>$$' : ''}
+                                                ${place.price_level && place.price_level === 1 ? ' <span> • </span>  Prices: <span>$</span>$$$' : ''}
+                                                ${place.price_level && place.price_level === 0 ? ' <span> • </span>  Prices: $$$$' : ''}
+                                            </p>
+                                            <ul class="top-icons">
+                                                <li><span class="icon-location-pin"></span>
+                                                    <p>${place.formatted_address}</p>
+                                                </li>
+                                                <li><span class="icon-phone"></span>
+                                                    <p>${place.formatted_phone_number}</p>
+                                                </li>
+                                            </ul>
+                                            
+                                            <div class="bottom-icons">
+                                                ${place.opening_hours && place.opening_hours.open_now ? 
+                                                `<div class="open-now">Open Now</div>` : 
+                                                `<div class="closed-now">Currently Closed</div>`}    
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>`);                   
+
+                        }
+                    }
+                });
+            }
+
+            function shuffle(array) {
+
+            // set up variables
+            var currentIndex = array.length, temporaryValue, randomIndex;
+
+            // While there remain elements to shuffle...
+            while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+            }
+            return array;
+            }
+
+    
         });
 
     </script>
