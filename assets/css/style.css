@@ -312,7 +312,7 @@ p {
 
 .search-icon {
     position: absolute;
-    top: 25px; 
+    top: 28px; 
     right: 20px;
     font-size: 24px;
 }
@@ -321,7 +321,7 @@ p {
   position: absolute;
   font-size: 26px;
   left: 20px;
-  top: 19px;
+  top: 22px;
 }
 
 .get-location:hover {
@@ -340,7 +340,31 @@ p {
   }
 }
 
-#formSearch input { padding-left: 60px; }
+#formSearch input { 
+  font-weight: 200;
+  padding-left: 60px; 
+  font-size: 20px;
+}
+
+@media (max-width: 449px) {
+  #formSearch input { 
+    font-size: 16px;
+  } 
+  .search-icon {
+    position: absolute;
+    top: 24px; 
+    right: 20px;
+    font-size: 24px;
+  }
+
+  .get-location {
+    position: absolute;
+    font-size: 26px;
+    left: 20px;
+    top: 20px;
+  }
+
+}
   
 
 .styled-heading {
