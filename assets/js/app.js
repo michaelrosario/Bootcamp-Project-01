@@ -5,6 +5,7 @@ var activeInfoWindow;
 var currentMarker = {};
 var markers = [];
 var loadedMarkers = [];
+var latestMarkers = []; 
 
 var counter = 0; // keep track of number of checkins
 var placeId = "";
@@ -253,30 +254,10 @@ function initMap() {
           && place.types.indexOf("route") === -1
           && place.types.indexOf("postal_code") === -1
           && place.types.indexOf("street_address") === -1){
-
-        var currentIcon = {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 6,
-          fillColor: '#8FBC8F',
-          strokeColor: '#8FBC8F'
-        };
         
         // creating the Google Maps Marker
-        var marker = new google.maps.Marker({
-            'position': {
-              lat: place.geometry.location.lat(),
-              lng:place.geometry.location.lng()
-            },
-            place_id: place.place_id,
-            name: place.name,
-            vicinity: place.vicinity,
-            rating: place.rating,
-            opening_hours: place.opening_hours,
-            price_level: place.price_level,
-            id: place.id,
-            map: map,
-            icon: currentIcon,
-        });
+        var marker = createMarker(place);
+
         if (activeInfoWindow) {
           activeInfoWindow.close();
         }
@@ -290,14 +271,13 @@ function initMap() {
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       });
-      
-
 
   });
   
-  // QUERY
-  searchArea(nyc);
+  // QUERIES
+  searchArea(nyc); // on load default to NYC
 
+  // If location is provided on URL
   var lat = urlParams.get('lat');
   var lang = urlParams.get('lang');
   var zoom = urlParams.get('zoom') || 15;
@@ -342,11 +322,11 @@ function newLocation(newLat,newLng,newZoom){
 }
 
 function searchArea(place){
-var request = {
-      location: place,
-      keyword: 'coffee',
-      radius: 1000,
-    };
+  var request = {
+    location: place,
+    keyword: 'coffee',
+    radius: 1000,
+  };
   infowindow = new google.maps.InfoWindow();
 
   if(markers.length){
@@ -360,102 +340,40 @@ var request = {
 
       if (status === google.maps.places.PlacesServiceStatus.OK) {
 
-        var latestMarkers = []; // a smaller array set to check for what markers changed
+        latestMarkers = []; // a smaller array set to check for what markers changed
 
         for (var i = 0; i < results.length; i++) {
           if(!placeExists(results[i].id,loadedMarkers)){
             var place = results[i];
             loadedMarkers.push(place);
-            var position = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
-            var currentIcon = {
-              path: google.maps.SymbolPath.CIRCLE,
-              scale: 6,
-              fillColor: '#8FBC8F',
-              strokeColor: '#8FBC8F'
-            };
-    
-            // creating the Google Maps Marker
-            var marker = new google.maps.Marker({
-                'position': position,
-                name: place.name,
-                vicinity: place.vicinity,
-                rating: place.rating,
-                opening_hours: place.opening_hours,
-                price_level: place.price_level,
-                id: place.id,
-                map: map,
-                icon: currentIcon,
-            });
-              
-            // when marker is clicked
-            google.maps.event.addListener(marker, 'click', function() {
-                
-                //console.log(JSON.stringify(place));
-                if (infowindow) {
-                  infowindow.close();
-                }
-                if (activeInfoWindow) {
-                  activeInfoWindow.close();
-                }
-                currentMarker = this;
-                var marker = {
-                  id : this.id,
-                  name: this.name,
-                  vicinity: this.vicinity,
-                  price_level: this.price_level,
-                  opening_hours: this.opening_hours,
-                  rating: this.rating,
-                };
 
-                placeId = this.id;
-                //console.log('current_place is '+placeId);
-
-                database.ref('/check-ins/' + marker.id).once('value').then(function(snapshot) {
-                  
-                  if(snapshot.exists() && snapshot.val().checkins){
-                    counter = snapshot.val().checkins;
-                  } else {
-                    counter = 0;
-                  }
-                  //console.log("counter",counter);
-                  infowindow = createWindow(marker);
-                });
-            
-                activeInfoWindow = infowindow; // keep track of the open infobox
-                infowindow.open(map, this); // open the infobox
-
-            });
+            var marker = createMarker(place);
 
             // if ID is provided, open that marker
-            var id = urlParams.get('id');
-            if(id == marker.id && placeExists(id,markers)) { 
+            //var id = urlParams.get('id');
+            //if(id == marker.id && placeExists(id,markers)) { 
               
-              activeInfoWindow = infowindow; // keep track of the open infobox
-              infowindow.open(map, marker); // open the infobox
+              //activeInfoWindow = infowindow; // keep track of the open infobox
+              //infowindow.open(map, marker); // open the infobox
 
-            } 
-            /*else if(id && !placeExists(id,markers)){
-              
-              console.log("marker has not loaded");
-              // marker is not yet loaded so we need to force google maps to query
+            //} else if(i == results.length-1 && !placeExists(id,markers)) {
+             
+              //console.log("place does not exist in markers... creating one");
+              /*var id = urlParams.get('id');
               var lat = urlParams.get('lat');
               var lang = urlParams.get('lang');
-              var zoom = 17;
-              if(lat && lang) {
-                newLocation(lat,lang,zoom);
-              }
-              
-            }*/
-            
-            markers.push(marker); // keep track of all loaded markers
-            latestMarkers.push(marker); // keep track of recent markers
+              var zoom = urlParams.get('zoom') || 17;
 
-            // if ID is provided, open that marker
-            var id = urlParams.get('id');
-            if(id == marker.id) {
-              activeInfoWindow = createWindow(marker);
-              activeInfoWindow.open(map, marker);
-            }
+              if(lat && lang) {
+                //newLocation(lat,lang,zoom);
+                console.log("searchArea ran");
+                searchArea({
+                    lat: lat,
+                    lng: lang
+                });
+              }*/
+
+            //}
             
             // check for latest markers that have changed
             database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
@@ -481,6 +399,90 @@ var request = {
         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
       */
   });
+}
+
+function createMarker(place){
+
+  var position = { lat: place.geometry.location.lat(), lng: place.geometry.location.lng() };
+
+  var currentIcon = {
+    path: google.maps.SymbolPath.CIRCLE,
+    scale: 6,
+    fillColor: '#c2c4c2',
+    strokeColor: '#c2c4c2'
+  };
+
+  if(place.opening_hours && place.opening_hours.open_now){
+    currentIcon = {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 6,
+      fillColor: '#8FBC8F',
+      strokeColor: '#8FBC8F'
+    };
+  }
+
+  // creating the Google Maps Marker
+  var marker = new google.maps.Marker({
+      'position': position,
+      name: place.name,
+      vicinity: place.vicinity,
+      rating: place.rating,
+      opening_hours: place.opening_hours,
+      price_level: place.price_level,
+      id: place.id,
+      map: map,
+      icon: currentIcon,
+  });
+    
+  // when marker is clicked
+  google.maps.event.addListener(marker, 'click', function() {
+      
+      //console.log(JSON.stringify(place));
+      if (infowindow) {
+        infowindow.close();
+      }
+      if (activeInfoWindow) {
+        activeInfoWindow.close();
+      }
+      currentMarker = this;
+      var marker = {
+        id : this.id,
+        name: this.name,
+        vicinity: this.vicinity,
+        price_level: this.price_level,
+        opening_hours: this.opening_hours,
+        rating: this.rating,
+      };
+
+      placeId = this.id;
+      //console.log('current_place is '+placeId);
+
+      database.ref('/check-ins/' + marker.id).once('value').then(function(snapshot) {
+        
+        if(snapshot.exists() && snapshot.val().checkins){
+          counter = snapshot.val().checkins;
+        } else {
+          counter = 0;
+        }
+        //console.log("counter",counter);
+        infowindow = createWindow(marker);
+      });
+  
+      activeInfoWindow = infowindow; // keep track of the open infobox
+      infowindow.open(map, this); // open the infobox
+
+  });
+  markers.push(marker); // keep track of all loaded markers
+  latestMarkers.push(marker); // keep track of recent markers
+
+  var id = urlParams.get('id');
+  if(id == marker.id) { 
+     console.log("match");
+      infowindow = createWindow(marker);
+      activeInfoWindow = infowindow; // keep track of the open infobox
+      infowindow.open(map, marker);
+  }
+  return marker;
 }
 
 // Check if id exists in our list already
@@ -539,7 +541,7 @@ database.ref('/check-ins/').on('child_changed', function(data) {
     if(data.key){
       var counter = data.val().checkins;
       if(parseInt(counter) > 0){
-        //console.log("checkins added", data.key);
+        console.log("checkins added", data.key);
         $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
       
         indexes = $.map(markers, function(obj, index) {
@@ -558,7 +560,7 @@ database.ref('/check-ins/').on('child_changed', function(data) {
   function updateMarker(marker,checkins){
 
     if(marker){
-      console.log("loading marker "+ marker.id);
+      console.log("updateMarker : loading marker"+ marker.id);
       currentMarker = marker;
     
       var colorIdx = 1;
