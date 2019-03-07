@@ -24,6 +24,17 @@
         padding: 0;
       }
 
+      .get-location { 
+        float: right; 
+        color: #FFF;
+        font-family: Arial, Helvetica, sans-serif;
+        border: 1px solid #999;
+        padding: 10px;
+        text-decoration: none;
+        margin: 10px 20px 0 5px;
+        border-radius: 4px;
+      }
+
       header { 
         background: rgba(37,42,51,0.9);
         position: fixed; 
@@ -59,9 +70,10 @@
    
     <header>
         <a class="Logo" href="/">
-        <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
+          <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
         </a>
         <div class="search-container">
+          <a href="#" class="get-location">Current Location</a>
           <input id="search" type="text"
             placeholder="Enter a location">
         </div>

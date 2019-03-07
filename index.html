@@ -136,6 +136,7 @@
                             <div class="col-md-10">
                                 <form class="form-wrap mt-4" id="formSearch">
                                     <div class="btn-group" role="group" aria-label="search">
+                                        <a class="get-location" href="#" title="Find my location"><i class="ti-location-arrow"></i></a>
                                         <i class="search-icon ti-search"></i>
                                         <input type="text" placeholder="Where would you like to work?" class="btn-group1"
                                             id="search">
@@ -538,6 +539,28 @@
 
             }
         });
+
+        $(document).on("click",".get-location",function(e){
+            e.preventDefault();
+            console.log("get location");
+            getLocation();
+            $(this).addClass("rotate");
+            return false;
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+            alert("Geolocation is not supported by this browser.");
+            }
+        }
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            console.log("get coords "+lat+" "+lng);
+            window.location = './search/?lat=' + lat + '&lang=' + lng + "&zoom=15";
+        }
 
         $(document).ready(function(){
     

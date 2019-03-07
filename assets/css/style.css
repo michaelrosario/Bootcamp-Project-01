@@ -316,6 +316,31 @@ p {
     right: 20px;
     font-size: 24px;
 }
+
+.get-location {
+  position: absolute;
+  font-size: 26px;
+  left: 20px;
+  top: 19px;
+}
+
+.get-location:hover {
+  text-decoration: none;
+}
+.rotate {
+  -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+  from {
+      -webkit-transform: rotate(0deg);
+  }
+  to {
+      -webkit-transform: rotate(359deg);
+  }
+}
+
+#formSearch input { padding-left: 60px; }
   
 
 .styled-heading {
