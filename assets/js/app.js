@@ -6,7 +6,6 @@ var currentMarker = {};
 var markers = [];
 var loadedMarkers = [];
 
-
 var counter = 0; // keep track of number of checkins
 var placeId = "";
 
@@ -19,15 +18,16 @@ var config = {
   storageBucket: "",
   messagingSenderId: "219006616621"
 };
+
 firebase.initializeApp(config);
 
 var database = firebase.database();
-
-
 var checkins = database.ref("/check-ins");
+var urlParams = new URLSearchParams(window.location.search);
 
 function initMap() {
-  
+
+  //QUERY STRING   
   var nyc = {
     lat: 40.7794406, 
     lng: -73.965438
@@ -226,12 +226,12 @@ function initMap() {
   autocomplete.bindTo('bounds', map);
 
   var marker = new google.maps.Marker({
-      map: map,
-      anchorPoint: new google.maps.Point(0, -29)
-    });
+    map: map,
+    anchorPoint: new google.maps.Point(0, -29)
+  });
 
   autocomplete.addListener('place_changed', function() {
-    marker.setVisible(false);
+    
     var place = autocomplete.getPlace();
     if (!place.geometry) {
         window.alert("No details available for input: '" + place.name + "'");
@@ -244,56 +244,90 @@ function initMap() {
         map.setCenter(place.geometry.location);
         //console.log(place.geometry.location)
       }
+
+      if(place.name && place.types[0] != "postal_code"){
+        var currentIcon = {
+          path: google.maps.SymbolPath.CIRCLE,
+          scale: 6,
+          fillColor: '#8FBC8F',
+          strokeColor: '#8FBC8F'
+        };
+        
+          // creating the Google Maps Marker
+          var marker = new google.maps.Marker({
+              'position': {
+                lat: place.geometry.location.lat(),
+                lng:place.geometry.location.lng()
+              },
+              place_id: place.place_id,
+              name: place.name,
+              vicinity: place.vicinity,
+              rating: place.rating,
+              opening_hours: place.opening_hours,
+              price_level: place.price_level,
+              id: place.id,
+              map: map,
+              icon: currentIcon,
+            });
+          }
+      console.log('place_id',marker.place_id);
       map.setZoom(15);
       searchArea({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       });
-      //console.log('place',`/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
-      marker.setPosition(place.geometry.location);
-      marker.setVisible(false);
+      
+      infowindow = createWindow(marker);
+      infowindow.open(map, marker);
 
   });
   
   // QUERY
   searchArea(nyc);
 
-  map.addListener("center_changed", function() {
-    searchArea(map.center);
-  });
-    
-
-  //QUERY STRING
-  var urlParams = new URLSearchParams(window.location.search);
   var lat = urlParams.get('lat');
   var lang = urlParams.get('lang');
   var zoom = urlParams.get('zoom') || 15;
-  var id = urlParams.get('id');
-  
-  //console.log(lat+" "+lang+" "+zoom);  
 
   if(lat && lang) {
     newLocation(lat,lang,zoom);
   }
-    if(id) {
-      indexes = $.map(markers, function(obj, index) {
-        if(obj.id == id) {
-            return index;
-        }
-      });
-      currentMarker = markers[indexes];
-      infowindow.open(map, currentMarker);
-    }
+
+
+  map.addListener("center_changed", function() {
+    searchArea(map.center);
+  });
+    
 }    
 
 
+// Creating helper function to build / append pop-up window on-click //
+function createWindow(marker) {
+  infowindow.setContent(`
+    <div id="marker${marker.id}">
+      <strong>${marker.name}</strong> <br>
+      ${marker.vicinity}<br>
+      <div class="price">
+      ${marker.price_level && marker.price_level === 4 ? 'Prices: $$$$' : ''}
+      ${marker.price_level && marker.price_level === 3 ? 'Prices: $$$<span style="opacity: 0.3">$</span>' : ''}
+      ${marker.price_level && marker.price_level === 2 ? 'Prices: $$<span style="opacity: 0.3">$$</span>' : ''}
+      ${marker.price_level && marker.price_level === 1 ? 'Prices: $<span style="opacity: 0.3">$$$</span>' : ''}
+      ${marker.price_level && marker.price_level === 0 ? 'Prices: <span style="opacity: 0.3">$$$$</span>' : ''}
+      </div>
+      ${marker.rating ? `Rating: ${marker.rating}` : ''} <br>
+      ${marker.opening_hours && marker.opening_hours.open_now ? `
+      Currently Open<br>
+      <a href="#" class="button checkIn" data-id="${marker.id}">Check In [${counter}]</a>`  : 'Currently Closed'}<br>
+    </div>
+  `);
+  return infowindow;
+
+}
 
 function newLocation(newLat,newLng,newZoom){
-
-var center = new google.maps.LatLng(newLat, newLng);
-
-map.setZoom(parseInt(newZoom));
-map.panTo(center);      
+  var center = new google.maps.LatLng(newLat, newLng);
+  map.setZoom(parseInt(newZoom));
+  map.panTo(center);      
 }
 
 function searchArea(place){
@@ -329,7 +363,6 @@ var request = {
               strokeColor: '#8FBC8F'
             };
     
-            
             // creating the Google Maps Marker
             var marker = new google.maps.Marker({
                 'position': position,
@@ -341,7 +374,7 @@ var request = {
                 id: place.id,
                 map: map,
                 icon: currentIcon,
-              });
+            });
               
             // when marker is clicked
             google.maps.event.addListener(marker, 'click', function() {
@@ -350,13 +383,10 @@ var request = {
                 if (infowindow) {
                   infowindow.close();
                 }
-
                 if (activeInfoWindow) {
                   activeInfoWindow.close();
                 }
-
                 currentMarker = this;
-
                 var marker = {
                   id : this.id,
                   name: this.name,
@@ -376,40 +406,39 @@ var request = {
                   } else {
                     counter = 0;
                   }
-                  console.log("counter",counter);
-                  infowindow.setContent(`
-                    <div id="marker${marker.id}">
-                      <strong>${marker.name}</strong> <br>
-                      ${marker.vicinity}<br>
-                      <div class="price">
-                      ${marker.price_level && marker.price_level === 4 ? 'Prices: $$$$' : ''}
-                      ${marker.price_level && marker.price_level === 3 ? 'Prices: $$$<span style="opacity: 0.3">$</span>' : ''}
-                      ${marker.price_level && marker.price_level === 2 ? 'Prices: $$<span style="opacity: 0.3">$$</span>' : ''}
-                      ${marker.price_level && marker.price_level === 1 ? 'Prices: $<span style="opacity: 0.3">$$$</span>' : ''}
-                      ${marker.price_level && marker.price_level === 0 ? 'Prices: <span style="opacity: 0.3">$$$$</span>' : ''}
-                      </div>
-                      ${marker.rating ? `Rating: ${marker.rating}` : ''} <br>
-                      ${marker.opening_hours && marker.opening_hours.open_now ? `
-                      Currently Open<br>
-                      <a href="#" class="button checkIn" data-id="${marker.id}">Check In [${counter}]</a>`  : 'Currently Closed'}<br>
-                    </div>
-                  `);
+                  //console.log("counter",counter);
+                  infowindow = createWindow(marker);
                 });
             
                 activeInfoWindow = infowindow;
                 infowindow.open(map, this);
 
-              });
+            });
+
+            // if ID is provided, open that marker
+            var id = urlParams.get('id');
+            if(id == marker.id && placeExists(id,markers)) { 
+              activeInfoWindow = infowindow;
+              infowindow.open(map, marker);
+            } else if(id && !placeExists(id,markers)){
+              console.log("marker has not loaded");
+            }
             
             markers.push(marker);
             latestMarkers.push(marker);
+            // if ID is provided, open that marker
+            var id = urlParams.get('id');
+            if(id == marker.id) {
+              activeInfoWindow = createWindow(marker);
+              activeInfoWindow.open(map, marker);
+            }
             
             // check for latest markers that have changed
             database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
                 if(markerData.exists() && markerData.val().checkins) {
                   var currentCounter = markerData.val().checkins;
                   if(parseInt(currentCounter) > 0){
-                    console.log("place exists in DB, loading.. ."+ markerData.val().id + " " + markerData.val().checkins);
+                    //console.log("place exists in DB, loading.. ."+ markerData.val().id + " " + markerData.val().checkins);
                     indexes = $.map(latestMarkers, function(obj, index) {
                       if(obj.id == markerData.val().id) {
                           return index;
@@ -456,16 +485,15 @@ var config = {
 */
  
   // observer
-  checkins.on("value", function (snapshot) {
-  /*  
+  /*  checkins.on("value", function (snapshot) {
+  
     snapshot.forEach(function(items) {
       console.log(items.key);
       console.log($("#"+items.key));
     });
-  */
-    
+  
   });
-
+*/
   $(document).on('click','a.checkIn',function(){
 
     var id = $(this).attr("data-id");
@@ -514,7 +542,7 @@ var config = {
     if(data.key){
       var counter = data.val().checkins;
       if(parseInt(counter) > 0){
-        console.log("checkins added", data.key);
+        //console.log("checkins added", data.key);
         $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
       
         indexes = $.map(markers, function(obj, index) {
@@ -555,9 +583,6 @@ var config = {
       currentMarker.setIcon(icon);
     }
   }
-
-  
-  
 
   
 /*
