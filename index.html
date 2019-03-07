@@ -532,7 +532,7 @@
                 return;
             } else {
 
-                window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=15&id=" + place.id;
+                window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=17&id=" + place.id;
                 console.log('place',
                     `/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
 
@@ -552,7 +552,7 @@
                 'ChIJaz4QVx32wokRfpu9QxuGV-w'
             ];
 
-            //shuffle(recommendedPlaces);
+            shuffle(recommendedPlaces);
 
             for(var i = 0; i < recommendedPlaces.length; i++){
                 createRecommendedCards(recommendedPlaces[i]);
