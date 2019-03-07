@@ -245,7 +245,15 @@ function initMap() {
         //console.log(place.geometry.location)
       }
 
-      if(place.name && place.types[0] != "postal_code"){
+      console.log("place.types",place.types);
+
+      if(place.name 
+          && place.types.indexOf("neighborhood") === -1  
+          && place.types.indexOf("premise") === -1
+          && place.types.indexOf("route") === -1
+          && place.types.indexOf("postal_code") === -1
+          && place.types.indexOf("street_address") === -1){
+
         var currentIcon = {
           path: google.maps.SymbolPath.CIRCLE,
           scale: 6,
@@ -253,32 +261,37 @@ function initMap() {
           strokeColor: '#8FBC8F'
         };
         
-          // creating the Google Maps Marker
-          var marker = new google.maps.Marker({
-              'position': {
-                lat: place.geometry.location.lat(),
-                lng:place.geometry.location.lng()
-              },
-              place_id: place.place_id,
-              name: place.name,
-              vicinity: place.vicinity,
-              rating: place.rating,
-              opening_hours: place.opening_hours,
-              price_level: place.price_level,
-              id: place.id,
-              map: map,
-              icon: currentIcon,
-            });
-          }
-      console.log('place_id',marker.place_id);
+        // creating the Google Maps Marker
+        var marker = new google.maps.Marker({
+            'position': {
+              lat: place.geometry.location.lat(),
+              lng:place.geometry.location.lng()
+            },
+            place_id: place.place_id,
+            name: place.name,
+            vicinity: place.vicinity,
+            rating: place.rating,
+            opening_hours: place.opening_hours,
+            price_level: place.price_level,
+            id: place.id,
+            map: map,
+            icon: currentIcon,
+        });
+        if (activeInfoWindow) {
+          activeInfoWindow.close();
+        }
+        activeInfoWindow = createWindow(marker);
+        activeInfoWindow.open(map, marker);
+      }
+
       map.setZoom(15);
+
       searchArea({
         lat: place.geometry.location.lat(),
         lng: place.geometry.location.lng()
       });
       
-      infowindow = createWindow(marker);
-      infowindow.open(map, marker);
+
 
   });
   
@@ -292,8 +305,6 @@ function initMap() {
   if(lat && lang) {
     newLocation(lat,lang,zoom);
   }
-
-
   map.addListener("center_changed", function() {
     searchArea(map.center);
   });
@@ -410,22 +421,35 @@ var request = {
                   infowindow = createWindow(marker);
                 });
             
-                activeInfoWindow = infowindow;
-                infowindow.open(map, this);
+                activeInfoWindow = infowindow; // keep track of the open infobox
+                infowindow.open(map, this); // open the infobox
 
             });
 
             // if ID is provided, open that marker
             var id = urlParams.get('id');
             if(id == marker.id && placeExists(id,markers)) { 
-              activeInfoWindow = infowindow;
-              infowindow.open(map, marker);
-            } else if(id && !placeExists(id,markers)){
+              
+              activeInfoWindow = infowindow; // keep track of the open infobox
+              infowindow.open(map, marker); // open the infobox
+
+            } 
+            /*else if(id && !placeExists(id,markers)){
+              
               console.log("marker has not loaded");
-            }
+              // marker is not yet loaded so we need to force google maps to query
+              var lat = urlParams.get('lat');
+              var lang = urlParams.get('lang');
+              var zoom = 17;
+              if(lat && lang) {
+                newLocation(lat,lang,zoom);
+              }
+              
+            }*/
             
-            markers.push(marker);
-            latestMarkers.push(marker);
+            markers.push(marker); // keep track of all loaded markers
+            latestMarkers.push(marker); // keep track of recent markers
+
             // if ID is provided, open that marker
             var id = urlParams.get('id');
             if(id == marker.id) {
@@ -449,17 +473,13 @@ var request = {
                   }
                 }
             });
-        
-            
-
-
           }
         }
       }
-/*
+      /* Removed clustering in favor for live checkins
       var markerCluster = new MarkerClusterer(map, markers,
         {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-*/
+      */
   });
 }
 
@@ -470,31 +490,8 @@ function placeExists(placeId,arr) {
 }); 
 }
 
-
-/*
-
-var config = {
-    apiKey: "AIzaSyBEcHq4dTxqD0hbDb1hvxwrnIAEzcQr2sc",
-    authDomain: "rimot-app.firebaseapp.com",
-    databaseURL: "https://rimot-app.firebaseio.com",
-    projectId: "rimot-app",
-    storageBucket: "rimot-app.appspot.com",
-    messagingSenderId: "327629075049"
-  };
-  firebase.initializeApp(config);
-*/
- 
-  // observer
-  /*  checkins.on("value", function (snapshot) {
-  
-    snapshot.forEach(function(items) {
-      console.log(items.key);
-      console.log($("#"+items.key));
-    });
-  
-  });
-*/
-  $(document).on('click','a.checkIn',function(){
+// Check in button
+$(document).on('click','a.checkIn',function(){
 
     var id = $(this).attr("data-id");
     console.log("id",id);
@@ -513,10 +510,10 @@ var config = {
 
     return false;
 
-  });
+});
 
-  // We update any open markers
-  database.ref('/check-ins/').on('child_changed', function(data) {
+// We update any open markers
+database.ref('/check-ins/').on('child_changed', function(data) {
    
     if(data.key){
       var counter = data.val().checkins;
@@ -536,7 +533,7 @@ var config = {
     }
   });
 
-   // We update any open markers
+   // We update any open markers 
    database.ref('/check-ins/').on('child_added', function(data) {
     
     if(data.key){
@@ -557,7 +554,7 @@ var config = {
     }
   });
 
-
+  // This updates the color of the marker
   function updateMarker(marker,checkins){
 
     if(marker){
@@ -585,76 +582,3 @@ var config = {
   }
 
   
-/*
-
-  
-  var connectionsRef = database.ref("/connections");
-  var connectedRef = database.ref(".info/connected");
-
-  connectedRef.on("value", function (snap) {
-    if (snap.val()) {
-      var con = connectionsRef.push(true);
-      con.onDisconnect().remove();
-    }
-  })
-
-  connectionsRef.on("value", function (snap) {
-
-    ("#connected-viewers").text(snap.numChildren()); 
-  });
-  
-  var recentUser = User;
-  var status;
-
-  database.ref("/userData").on("value", function (snapshot) {
-    if (snapshot.child("recentUser").exists() && snapshot.child("status").exists()) {
-      recentUser = snapshot.val().recentUser;
-      status = snapshot.val().status;
-
-      $("#user-name").text(snapshot.val().recentUser);
-      $("#status").text(snapshot.val().status);
-
-      console.log(recentUser);
-      console.log(status);
-    }
-
-    else {
-      $("#user-name").text(recentUser);
-      $("#status").text(status);
-
-      console.log(recentUser);
-      console.log(status);
-    }
-
-  });
-
-  function errorObject () {
-    console.log("The read failed: " + errorObject.code)
-  };
-
-  $("#submit-status").on("click", function(event) {
-    event.preventDefault();
-    var userName = $("#user-name").val().trim();
-    var userStatus = $("#status").val().trim();
-
-    console.log(userName);
-    console.log(userStatus);
-  })
-
-  if (userName) {
-    database.ref("/userData").set({
-      userName: 
-      status: 
-    })
-
-    console.log(userName);
-    console.log(status);
-
-    userName = userData;
-    status = message;
-
-    $("#user-name").text(userName);
-    $("#status").text(message);
-  }
-
-  */
