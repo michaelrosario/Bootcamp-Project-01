@@ -1,0 +1,66 @@
+* { 
+    box-sizing: border-box;
+}
+.Logo { float: left; color: #FFF; width: 100%; margin: 16px 0 0 30px; max-width: 115px; }
+
+#map {
+margin-top: 62px;
+height: 100%;
+z-index: 1;
+width: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+.get-location { 
+position: absolute;
+left: 0px;
+top: 20px;
+z-index: 9;
+color: #999;
+font-size: 20px;
+text-decoration: none;
+}
+
+.search-icon {
+right: 30px; top: 23px;
+position: absolute;
+z-index: 4;
+}
+
+header { 
+background: rgba(37,42,51,0.9);
+position: fixed; 
+top: 0px; 
+width: 100%;
+z-index: 1;
+height: 62px;
+}
+.search-container {
+float: right;
+position: relative;
+width: 50%;
+}
+#search {
+font-weight: 200;
+float: right;
+border-radius: 5px;
+width: 100%;
+padding: 0 40px 0 40px !important; 
+margin: 10px 15px 0 0;
+height: 40px; padding: 10px;
+font-size: 19px;
+z-index: 1;
+position: relative;
+}
+
+.button .checkIn {
+    padding: 10px;
+    border-radius: 4px;
+    color: #FFF;
+    background:  #FF6A5C;
+}
