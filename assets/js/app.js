@@ -231,13 +231,24 @@ function initMap() {
     anchorPoint: new google.maps.Point(0, -29)
   });
 
-  autocomplete.addListener('place_changed', function() {
-    
-    var place = autocomplete.getPlace();
-    if (!place.geometry) {
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
+  google.maps.event.addDomListener(input, 'keydown', function(event) { 
+    if (event.keyCode === 13) { 
+        event.preventDefault();
+        if($("#search").val()){
+          google.maps.event.trigger(event.target, 'keydown', {
+              keyCode: 40
+          });
+      }
     }
+}); 
+
+autocomplete.addListener('place_changed', function (event) {
+    var place = autocomplete.getPlace();
+      if (!place.geometry) {
+        
+          //window.alert("No details available for input: '" + place.name + "'");
+          //return;
+      } 
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);
         //console.log(place.geometry.viewport);
@@ -246,6 +257,9 @@ function initMap() {
         //console.log(place.geometry.location)
       }
 
+      if($("#search").val()){ 
+        $("#search").val("").blur();
+      }
       console.log("place.types",place.types);
 
       if(place.name 
@@ -290,7 +304,6 @@ function initMap() {
   });
     
 }    
-
 
 // Creating helper function to build / append pop-up window on-click //
 function createWindow(marker) {
@@ -516,7 +529,6 @@ $(document).on('click','a.checkIn',function(){
 
 // We update any open markers
 database.ref('/check-ins/').on('child_changed', function(data) {
-   
     if(data.key){
       var counter = data.val().checkins;
       if(parseInt(counter) > 0){
@@ -533,10 +545,10 @@ database.ref('/check-ins/').on('child_changed', function(data) {
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
-  });
+});
 
-   // We update any open markers 
-   database.ref('/check-ins/').on('child_added', function(data) {
+// We update any open markers 
+database.ref('/check-ins/').on('child_added', function(data) {
     
     if(data.key){
       var counter = data.val().checkins;
@@ -554,10 +566,10 @@ database.ref('/check-ins/').on('child_changed', function(data) {
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
-  });
+});
 
   // This updates the color of the marker
-  function updateMarker(marker,checkins){
+function updateMarker(marker,checkins){
 
     if(marker){
       console.log("updateMarker : loading marker"+ marker.id);
@@ -581,6 +593,25 @@ database.ref('/check-ins/').on('child_changed', function(data) {
       colorIdx %= color.length;
       currentMarker.setIcon(icon);
     }
-  }
+}
 
-  
+$(document).on("click",".get-location",function(e){
+    e.preventDefault();
+    console.log("get location");
+    getLocation();
+    return false;
+});
+
+function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+}
+function showPosition(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    console.log("get coords "+lat+" "+lng);
+    map.setCenter(new google.maps.LatLng(lat, lng));
+}

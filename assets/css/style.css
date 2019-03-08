@@ -312,9 +312,58 @@ p {
 
 .search-icon {
     position: absolute;
-    top: 25px; 
+    top: 28px; 
     right: 20px;
     font-size: 24px;
+}
+
+.get-location {
+  position: absolute;
+  font-size: 26px;
+  left: 20px;
+  top: 22px;
+}
+
+.get-location:hover {
+  text-decoration: none;
+}
+.rotate {
+  -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+  from {
+      -webkit-transform: rotate(0deg);
+  }
+  to {
+      -webkit-transform: rotate(359deg);
+  }
+}
+
+#formSearch input { 
+  font-weight: 200;
+  padding-left: 60px; 
+  font-size: 20px;
+}
+
+@media (max-width: 449px) {
+  #formSearch input { 
+    font-size: 16px;
+  } 
+  .search-icon {
+    position: absolute;
+    top: 25px; 
+    right: 15px;
+    font-size: 24px;
+  }
+
+  .get-location {
+    position: absolute;
+    font-size: 26px;
+    left: 20px;
+    top: 20px;
+  }
+
 }
   
 

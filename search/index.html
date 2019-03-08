@@ -4,6 +4,8 @@
     <title>Search - Work Rimot</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
+    <!-- Themify Icon -->
+    <link rel="stylesheet" href="../assets/css/themify-icons.css">
     <style>
       
       * { 
@@ -24,6 +26,22 @@
         padding: 0;
       }
 
+      .get-location { 
+        position: absolute;
+        left: 0px;
+        top: 20px;
+        z-index: 9;
+        color: #999;
+        font-size: 20px;
+        text-decoration: none;
+      }
+
+      .search-icon {
+        right: 30px; top: 23px;
+        position: absolute;
+        z-index: 4;
+      }
+
       header { 
         background: rgba(37,42,51,0.9);
         position: fixed; 
@@ -32,19 +50,23 @@
         z-index: 1;
         height: 62px;
     }
-
-        #search {
-            float: right;
-            border-radius: 5px;
-            width: 50%; margin: 10px 15px 0 0;
-            height: 40px; padding: 10px;
-             font-size: 19px;
-             z-index: 9999;
-             position: relative;
-
-        }
-        
-    
+    .search-container {
+      float: right;
+      position: relative;
+      width: 50%;
+    }
+    #search {
+      font-weight: 200;
+      float: right;
+      border-radius: 5px;
+      width: 100%;
+      padding: 0 40px 0 40px !important; 
+      margin: 10px 15px 0 0;
+      height: 40px; padding: 10px;
+      font-size: 19px;
+      z-index: 1;
+      position: relative;
+    }
     
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -59,9 +81,13 @@
    
     <header>
         <a class="Logo" href="/">
-        <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
+          <img src="../assets/images/rimote-logo.svg" alt="rimote-logo" id="rimotLogo" href="index.html">
         </a>
         <div class="search-container">
+          <a class="get-location" href="#" title="Find my location">
+            <i class="ti-location-arrow"></i>
+          </a>
+          <i class="search-icon ti-search"></i>
           <input id="search" type="text"
             placeholder="Enter a location">
         </div>

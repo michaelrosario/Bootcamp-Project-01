@@ -136,6 +136,7 @@
                             <div class="col-md-10">
                                 <form class="form-wrap mt-4" id="formSearch">
                                     <div class="btn-group" role="group" aria-label="search">
+                                        <a class="get-location" href="#" title="Find my location"><i class="ti-location-arrow"></i></a>
                                         <i class="search-icon ti-search"></i>
                                         <input type="text" placeholder="Where would you like to work?" class="btn-group1"
                                             id="search">
@@ -522,14 +523,26 @@
     <script src="./assets/js/global.js"></script>
 
     <script>
+        
         var input = document.getElementById("search");
         var autocomplete = new google.maps.places.Autocomplete(input);
 
-        autocomplete.addListener('place_changed', function () {
+        google.maps.event.addDomListener(input, 'keydown', function(event) { 
+            if (event.keyCode === 13) { 
+                event.preventDefault();
+                if($("#search").val()){
+                    google.maps.event.trigger(event.target, 'keydown', {
+                        keyCode: 40,
+                    });
+                }
+            }
+        }); 
+
+        autocomplete.addListener('place_changed', function (event) {
             var place = autocomplete.getPlace();
             if (!place.geometry) {
-                window.alert("No details available for input: '" + place.name + "'");
-                return;
+                //window.alert("No details available for input: '" + place.name + "'");
+                //return;
             } else {
 
                 window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=17&id=" + place.id;
@@ -538,6 +551,29 @@
 
             }
         });
+
+        $(document).on("click",".get-location",function(e){
+            e.preventDefault();
+            console.log("get location");
+            getLocation();
+            $(this).addClass("rotate");
+            return false;
+        });
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+                $(".get-location").addClass("rotate");
+            } else {
+            alert("Geolocation is not supported by this browser.");
+            }
+        }
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lng = position.coords.longitude;
+            console.log("get coords "+lat+" "+lng);
+            window.location = './search/?lat=' + lat + '&lang=' + lng + "&zoom=15";
+        }
 
         $(document).ready(function(){
     
