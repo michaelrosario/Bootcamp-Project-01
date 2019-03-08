@@ -231,13 +231,24 @@ function initMap() {
     anchorPoint: new google.maps.Point(0, -29)
   });
 
-  autocomplete.addListener('place_changed', function() {
-    
-    var place = autocomplete.getPlace();
-    if (!place.geometry) {
-        window.alert("No details available for input: '" + place.name + "'");
-        return;
+  google.maps.event.addDomListener(input, 'keydown', function(event) { 
+    if (event.keyCode === 13) { 
+        event.preventDefault();
+        if($("#search").val()){
+          google.maps.event.trigger(event.target, 'keydown', {
+              keyCode: 40
+          });
+      }
     }
+}); 
+
+autocomplete.addListener('place_changed', function (event) {
+    var place = autocomplete.getPlace();
+      if (!place.geometry) {
+        
+          //window.alert("No details available for input: '" + place.name + "'");
+          //return;
+      } 
       if (place.geometry.viewport) {
         map.fitBounds(place.geometry.viewport);
         //console.log(place.geometry.viewport);
@@ -246,6 +257,9 @@ function initMap() {
         //console.log(place.geometry.location)
       }
 
+      if($("#search").val()){ 
+        $("#search").val("").blur();
+      }
       console.log("place.types",place.types);
 
       if(place.name 
@@ -290,7 +304,6 @@ function initMap() {
   });
     
 }    
-
 
 // Creating helper function to build / append pop-up window on-click //
 function createWindow(marker) {
