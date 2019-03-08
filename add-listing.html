@@ -282,17 +282,17 @@
         <!--//END FOOTER -->
     
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
-<!-- -->
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js" integrity="sha256-dHf/YjH1A4tewEsKUSmNnV05DDbfGN3g7NMq86xgGh8=" crossorigin="anonymous"></script>-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js" integrity="sha256-dHf/YjH1A4tewEsKUSmNnV05DDbfGN3g7NMq86xgGh8=" crossorigin="anonymous"></script>-->
-<!--	<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>-->
-	<script src="assets/js/firebase.js"></script>
+    <script src="assets/js/global.js"></script>    
 	<script>
-/**/
+
 	
-		//$("#add-a-listing").validator();
+		$("#add-a-listing").validator();
         $("#add-a-listing").on("submit",function(e){
             e.preventDefault();
 
@@ -322,10 +322,6 @@
             }
         });
 
-
-    </script>
-
-	<script>
         // FIREBASE CONFIG
         var config = {
         apiKey: "AIzaSyDbUywd58phZolNaXoEYSvAskt2gw0QGLE",

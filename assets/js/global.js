@@ -16,6 +16,8 @@ $(window).scroll(function() {
     };
 });
   
+if($('.responsiveRow').length){
+
 $('.responsiveRow').slick({
   dots: false,
   infinite: false,
@@ -52,3 +54,5 @@ $('.responsiveRow').slick({
     // instead of a settings object
   ]
 });
+
+}
