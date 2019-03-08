@@ -516,7 +516,6 @@ $(document).on('click','a.checkIn',function(){
 
 // We update any open markers
 database.ref('/check-ins/').on('child_changed', function(data) {
-   
     if(data.key){
       var counter = data.val().checkins;
       if(parseInt(counter) > 0){
@@ -533,10 +532,10 @@ database.ref('/check-ins/').on('child_changed', function(data) {
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
-  });
+});
 
-   // We update any open markers 
-   database.ref('/check-ins/').on('child_added', function(data) {
+// We update any open markers 
+database.ref('/check-ins/').on('child_added', function(data) {
     
     if(data.key){
       var counter = data.val().checkins;
@@ -554,10 +553,10 @@ database.ref('/check-ins/').on('child_changed', function(data) {
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
-  });
+});
 
   // This updates the color of the marker
-  function updateMarker(marker,checkins){
+function updateMarker(marker,checkins){
 
     if(marker){
       console.log("updateMarker : loading marker"+ marker.id);
@@ -581,6 +580,25 @@ database.ref('/check-ins/').on('child_changed', function(data) {
       colorIdx %= color.length;
       currentMarker.setIcon(icon);
     }
-  }
+}
 
-  
+$(document).on("click",".get-location",function(e){
+    e.preventDefault();
+    console.log("get location");
+    getLocation();
+    return false;
+});
+
+function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+}
+function showPosition(position) {
+    var lat = position.coords.latitude;
+    var lng = position.coords.longitude;
+    console.log("get coords "+lat+" "+lng);
+    map.setCenter(new google.maps.LatLng(lat, lng));
+}
