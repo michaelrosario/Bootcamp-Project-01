@@ -26,6 +26,9 @@
     <link rel="stylesheet" href="assets/css/set1.css">
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
+<!--    -->
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="assets/css/form-style-jt.css">
 
 </head>
 
@@ -112,122 +115,145 @@
     <!--//END HEADER -->
     <!--============================= FEATURED PLACES =============================-->
     <section class="main-block light-bg">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                        <h4>Add Your Business</h4>
-                        <form id="add-a-listing">
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                    <label for="businessName">Find Your Business</label>
-                                    <input type="text" class="form-control" id="search" placeholder="Your Business">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                    <div class="col-md-12">
-                                        <label for="businessName">Address</label>
-                                        <input type="text" class="form-control" id="address" placeholder="Your Business">
-                                    </div>
-                                </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="First name">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="lastName">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Last name">
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                            <label for="website">Website</label>
-                                            <input type="text" class="form-control" id="website" placeholder="Website">
-                                    </div>
-                                <div class="form-group col-md-6">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
-                                </div>
-                            </div>
-                       
-                                
-                            <div id="business-type" class="form-group row">
-                                <div class="col-sm-6">
-                                    Business Type  
-                                    <label class="form-check-label" for="form-coffee">
-                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee">
-                                        Coffee Shop 
-                                    </label>
-                                                                    
-                                    <label class="form-check-label" for="form-restaurant">
-                                            <input name="type" value="Restaurant" class="form-check-input" type="checkbox" id="form-restaurant">
-                                            Restaurant
-                                    </label>
-                                                                
-                                    <label class="form-check-label" for="form-bar">
-                                            <input name="type" value="Bar" class="form-check-input" type="checkbox" id="form-bar">
-                                            Bar
-                                    </label>
-                                                            
-                                    <label class="form-check-label" for="form-coworking">
-                                            <input name="type" value="Coworking Space" class="form-check-input" type="checkbox" id="form-coworking">
-                                            Coworking Space
-                                    </label>
-                                            
-                                    <label class="form-check-label" for="form-other-2">
-                                            <input name="type" value="Other" class="form-check-input" type="checkbox" id="form-other-2">
-                                            Other
-                                    </label>
+	<form id="add-a-listing">
+	<div class="form-style-jt">
+	<h1>Add Your Business</h1>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<div class="col-md-6 col-padding">
+				<div class="section"><span>1</span>Find Your Business</div>
+				<div class="inner-wrap">
+			<!--
+					<label>Your Full Name <input type="text" name="field1" /></label>
+					<label>Address <textarea name="field2"></textarea></label>
+			-->
+					<input type="text" class="form-control" id="search" placeholder="">
+				</div>
 
-                                </div>
-                            
-                                <div id="amenities" class="col-sm-6">
-                                    Available Amenities
-                                
-                                    <label class="form-check-label" for="form-wifi"></label>
-                                        <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi">
-                                        Free Wi-Fi 
-                                    </label>
-                                
-                                    <label class="form-check-label" for="form-power"></label>
-                                        <input name="amenities" value="Power Outlets" class="form-check-input" type="checkbox" id="form-power">
-                                        Power Outlets
-                                    </label>
-                                    
-                                    <label class="form-check-label" for="form-restroom"></label>
-                                        <input name="amenities" value="Restrooms" class="form-check-input" type="checkbox" id="form-restroom">
-                                        Restrooms
-                                    </label>
-                                    
-                                    <label class="form-check-label" for="form-food"></label>
-                                        <input name="amenities" value="Food/Drink" class="form-check-input" type="checkbox" id="form-food">
-                                        Food/Drink
-                                    </label>
-                                
-                                    <label class="form-check-label" for="form-other"></label>
-                                        <input name="amenities" value="Other" class="form-check-input" type="checkbox" id="form-other">
-                                        Other
-                                    </label>
+				<div class="section"><span>2</span>Address</div>
+				<div class="inner-wrap">
+			<!--
+					<label>Email Address <input type="text" class="form-control" id="address" placeholder="Your Business"></label>
+					<label>Phone Number <input type="text" name="field4" /></label>
+			-->
+					<input type="text" class="form-control" id="address" placeholder="">
+				</div>
 
-                                </div>
-                            </div>
-                        
-                            <div class="row">
-                                <div class="col-sm-12 text-center">
-                                    <input id="placeId" name="placeId" value="" type="hidden">
-                                    <button type="submit" class="submit-button btn btn-primary">Submit</button>
-                                </div>
-                            </div>
-                        </form>
-                </div>
-            </div>
-        </div>
-    </section>
+				<div class="section"><span>3</span>Website</div>
+				<div class="inner-wrap">
+					<label><input type="text" class="form-control" id="website" placeholder=""></label>
+				</div>
+<!--
+				<div class="button-section">
+				 <input type="submit" name="Sign Up" />
+				 <span class="privacy-policy">
+				 <input type="checkbox" name="field7">You agree to our Terms and Policy. 
+				 </span>
+				</div>
+-->
+	
+			</div>
+			<div class="col-md-6">
+				
+				<div class="section"><span>4</span>Full name</div>
+				<div class="inner-wrap">
+					<label>First Name <input type="text" class="form-control" id="firstName" placeholder="" required /></label>
+					<label>Last Name <input type="text" class="form-control" id="lastName" placeholder="" required /></label>
+				</div>
+
+				<div class="section"><span>5</span>Email Address</div>
+				<div class="inner-wrap">
+			<!--
+					<label>Email Address <input type="text" class="form-control" id="address" placeholder="Your Business"></label>
+					<label>Phone Number <input type="text" name="field4" /></label>
+			-->
+					<label><input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="" required /></label>
+				</div>
+				
+				<div class="section"><span>6</span>Business Type &amp; Amenities</div>
+				<div class="inner-wrap">
+					<div class="row">
+						<div id="business-type" class="col-sm-6">
+
+							<h6>Business Type</h6>
+							<div class="checkbox">
+								<label class="form-check-label" for="form-coffee">
+									<input name="type" value="Coffee Shop" class="form-check-label" type="checkbox" id="form-coffee" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Coffee Shop 
+								</label>
+
+								<label class="form-check-label" for="form-restaurant">
+										<input name="type" value="Restaurant" class="form-check-label" type="checkbox" id="form-restaurant" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Restaurant
+								</label>
+
+								<label class="form-check-label" for="form-bar">
+										<input name="type" value="Bar" class="form-check-label" type="checkbox" id="form-bar" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Bar
+								</label>
+
+								<label class="form-check-label" for="form-coworking">
+										<input name="type" value="Coworking Space" class="form-check-label" type="checkbox" id="form-coworking" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Coworking Space
+								</label>
+							</div>   
+						</div>
+
+						<div id="amenities" class="col-sm-6">
+							<h6>Available Amenities</h6>
+							<div class="checkbox">
+								<label class="form-check-label" for="form-wifi">
+									<input name="amenities" value="Free Wi-Fi" class="form-check-label" type="checkbox" id="form-wifi" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Free Wi-Fi 
+								</label>
+
+								<label class="form-check-label" for="form-power">
+									<input name="amenities" value="Power Outlets" class="form-check-label" type="checkbox" id="form-power" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Power Outlets
+								</label>
+
+								<label class="form-check-label" for="form-restroom">
+									<input name="amenities" value="Restrooms" class="form-check-label" type="checkbox" id="form-restroom" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Restrooms
+								</label>
+
+								<label class="form-check-label" for="form-food">
+									<input name="amenities" value="Food/Drink" class="form-check-label" type="checkbox" id="form-food" required />
+									<span class="cr"><i class="cr-icon fa fa-check"></i></span>
+									Food/Drink
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-12 text-center">
+				<input id="placeId" name="placeId" value="" type="hidden">
+				<button name="submit" type="button" value="submit" class="submit-button btn btn-primary">Submit</button>
+			</div>
+		</div>		
+	
+	</div>
+</div>
+</form>	
+	</section>
 
     <style>
         #business-type label,
         #amenities label {
             display: block;
+			font-size: 1.2em;
         }
     </style>
 
@@ -256,13 +282,17 @@
         <!--//END FOOTER -->
     
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
+<!-- -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  
-    <script>
-
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.min.js" integrity="sha256-dHf/YjH1A4tewEsKUSmNnV05DDbfGN3g7NMq86xgGh8=" crossorigin="anonymous"></script>-->
+<!--	<script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>-->
+	<script src="assets/js/firebase.js"></script>
+	<script>
+/**/
+	
+		//$("#add-a-listing").validator();
         $("#add-a-listing").on("submit",function(e){
             e.preventDefault();
 
@@ -270,8 +300,13 @@
 
         });
 
+		var options = {
+            keyword:'cafe',
+            types: ['establishment']
+        }
+		
         var input = document.getElementById("search");
-        var autocomplete = new google.maps.places.Autocomplete(input);
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
 
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
@@ -287,6 +322,10 @@
             }
         });
 
+
+    </script>
+
+	<script>
         // FIREBASE CONFIG
         var config = {
         apiKey: "AIzaSyDbUywd58phZolNaXoEYSvAskt2gw0QGLE",
@@ -337,10 +376,7 @@
            
 
         });
-
     </script>
-
-    
 </body>
 
 </html>
