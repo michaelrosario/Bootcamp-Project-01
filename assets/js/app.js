@@ -36,7 +36,8 @@ function initMap() {
   
   var customMapTypeId = 'custom_style';
 
-  var jsonStyle = [
+  var jsonStyle = 
+  [
       {
           "featureType": "water",
           "elementType": "geometry",
@@ -217,7 +218,7 @@ function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
       zoom: 15,
       center:  nyc,
-      disableDefaultUI: true,
+      disableDefaultUI: false,
       styles: jsonStyle,
   });
 
