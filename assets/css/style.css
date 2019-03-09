@@ -310,6 +310,63 @@ p {
    FIND PLACES
    ============================================================== */
 
+.search-icon {
+    position: absolute;
+    top: 28px; 
+    right: 20px;
+    font-size: 24px;
+}
+
+.get-location {
+  position: absolute;
+  font-size: 26px;
+  left: 20px;
+  top: 22px;
+}
+
+.get-location:hover {
+  text-decoration: none;
+}
+.rotate {
+  -webkit-animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+  from {
+      -webkit-transform: rotate(0deg);
+  }
+  to {
+      -webkit-transform: rotate(359deg);
+  }
+}
+
+#formSearch input { 
+  font-weight: 200;
+  padding-left: 60px; 
+  font-size: 20px;
+}
+
+@media (max-width: 449px) {
+  #formSearch input { 
+    font-size: 16px;
+  } 
+  .search-icon {
+    position: absolute;
+    top: 25px; 
+    right: 15px;
+    font-size: 24px;
+  }
+
+  .get-location {
+    position: absolute;
+    font-size: 26px;
+    left: 20px;
+    top: 20px;
+  }
+
+}
+  
+
 .styled-heading {
   text-align: center;
   margin: 0 0 50px; }
@@ -588,6 +645,37 @@ p {
     color: #737882; }
 
 /* ==============================================================
+   FOOTER
+   ============================================================== */
+footer {
+  position: relative; }
+
+.copyright {
+  text-align: center; }
+  .copyright p {
+    font-size: 18px;
+    font-weight: 400;
+    color: #ccc;
+    margin: 0; }
+  .copyright ul {
+    margin: 25px 0 0;
+    padding: 0; }
+    .copyright ul li {
+      list-style: none;
+      display: inline-block; }
+      .copyright ul li a {
+        color: #ccc;
+        font-size: 22px;
+        padding: 0 10px;
+        opacity: 0.6;
+        -webkit-transition: 0.3s;
+        -o-transition: 0.3s;
+        transition: 0.3s; }
+        .copyright ul li a:hover {
+          opacity: 1;
+          text-decoration: none; }
+
+/* ==============================================================
    SUB PAGES
    ============================================================== */
 /* ==============================================================
@@ -770,49 +858,258 @@ p {
 /* ==============================================================
    BOOKING DETAILS
    ============================================================== */
-footer {
-  position: relative; }
+.booking-details_wrap {
+  padding: 26px 0; }
 
-.copyright {
-  text-align: center; }
-  .copyright p {
+.booking-checkbox_wrap {
+  background: #fff;
+  padding: 30px; }
+  .booking-checkbox_wrap h5 {
+    color: #3e434b;
+    text-align: center;
+    font-weight: 400; }
+
+.booking-checkbox {
+  color: #737882;
+  font-size: 15px; }
+  .booking-checkbox p {
+    line-height: 1.8; }
+
+.customer-review_wrap {
+  display: inline-block;
+  width: 100%; }
+
+.customer-img {
+  float: left; }
+  @media (max-width: 992px) {
+    .customer-img {
+      text-align: center;
+      float: none;
+      margin: 0 0 15px; } }
+  .customer-img img {
+    border-radius: 50%; }
+  .customer-img p {
+    color: #3e434b;
+    margin: 4px 0 0;
+    text-align: center;
     font-size: 18px;
-    font-weight: 400;
-    color: #ccc;
-    margin: 0; }
-  .copyright ul {
-    margin: 25px 0 0;
+    line-height: 1.2; }
+  .customer-img span {
+    font-size: 14px;
+    color: #737882;
+    text-align: center; }
+
+.customer-content-wrap {
+  margin: 0 0 0 135px; }
+  @media (max-width: 992px) {
+    .customer-content-wrap {
+      margin: 0 0 0 110px; } }
+  @media (max-width: 992px) {
+    .customer-content-wrap {
+      margin: 0px; } }
+  .customer-content-wrap ul {
+    margin: 24px 0 0;
     padding: 0; }
-    .copyright ul li {
+    .customer-content-wrap ul li {
       list-style: none;
-      display: inline-block; }
-      .copyright ul li a {
-        color: #ccc;
-        font-size: 22px;
-        padding: 0 10px;
-        opacity: 0.6;
-        -webkit-transition: 0.3s;
-        -o-transition: 0.3s;
-        transition: 0.3s; }
-        .copyright ul li a:hover {
-          opacity: 1;
-          text-decoration: none; }
+      display: inline-block;
+      margin: 0 10px 0 0; }
+      @media (max-width: 480px) {
+        .customer-content-wrap ul li {
+          margin: 0 0 10px 0; } }
+  .customer-content-wrap span {
+    color: #737882;
+    display: inline-block;
+    margin: 26px 0 0; }
+  .customer-content-wrap a {
+    border: 1px solid #ccc;
+    color: #737882;
+    font-size: 14px;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin: 0 0 0 10px; }
+    .customer-content-wrap a:hover {
+      text-decoration: none; }
+    .customer-content-wrap a span {
+      margin: 0 6px 0 0; }
 
+.customer-text {
+  color: #737882;
+  margin: 15px 0 0;
+  line-height: 1.6; }
 
-/* Search  NAV Bar CSS */
+.customer-content h6 {
+  color: #3e434b; }
 
-#search-navbar {
-  font-weight: 200;
-  right: 175px;
-  border-radius: 5px;
-  width: 100%;
-  padding: 0 40px 0 40px !important; 
-  margin: 0 auto;
-  height: 40px; padding: 10px;
-  font-size: 19px;
-  z-index: 1;
-  position: relative;
-  }
+.customer-content p {
+  color: #737882;
+  display: inline-block;
+  vertical-align: top;
+  line-height: 0.8;
+  margin: 0 0 0 8px; }
+
+.customer-review {
+  display: inline-block; }
+  @media (max-width: 576px) {
+    .customer-review {
+      display: block; } }
+  .customer-review span {
+    width: 10px;
+    height: 10px;
+    background: #46cd38;
+    border-radius: 50%;
+    display: block;
+    float: left;
+    margin: 0 5px 0 0; }
+
+.round-icon-blank {
+  background: #d9dce7 !important; }
+
+.round-icon-red {
+  background: #ff5a5a !important; }
+
+.round-icon-orange {
+  background: #ffbb27 !important; }
+
+.customer-rating {
+  background: #46cd38;
+  padding: 8px 14px;
+  float: right;
+  font-size: 18px;
+  color: #fff;
+  border-radius: 3px; }
+  @media (max-width: 576px) {
+    .customer-rating {
+      float: none;
+      display: inline-block; } }
+
+.customer-rating-red {
+  background: #ff5a5a !important; }
+
+.customer-description {
+  margin: 0 0 0 50px; }
+
+.contact-info {
+  background: #fff;
+  padding: 0 0 6px;
+  margin: 0 0 15px; }
+  .contact-info img {
+    width: 100%; }
+  .contact-info label {
+    color: #46cd38;
+    font-size: 14px;
+    padding: 0 0 0 50px; }
+    @media (max-width: 992px) {
+      .contact-info label {
+        display: block; } }
+
+.address {
+  color: #737882;
+  padding: 18px 0 0 16px; }
+  .address > span {
+    font-size: 18px;
+    float: left;
+    margin: 4px 0 0; }
+  .address p {
+    margin: 0 0 0 34px; }
+  .address .featured-open {
+    font-size: 13px;
+    padding: 0 0 0 34px; }
+
+.btn-contact {
+  display: block;
+  padding: 16px;
+  margin: 12px 16px;
+  border: 2px solid #ff3a6d;
+  color: #ff3a6d;
+  font-weight: 400; }
+  .btn-contact:hover {
+    background: #ff3a6d;
+    border: 2px solid #ff3a6d; }
+
+.follow {
+  background: #fff; }
+  .follow ul {
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: space-around;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    text-align: center; }
+    .follow ul li {
+      list-style: none;
+      padding: 13px 0;
+      width: 33%; }
+      @media (max-width: 1200px) {
+        .follow ul li {
+          padding: 12px 18px; } }
+      .follow ul li:first-child, .follow ul li:nth-child(2) {
+        border-right: 1px solid #ededed; }
+      .follow ul li h6 {
+        margin: 0; }
+  .follow a {
+    color: #ff3a6d;
+    text-align: center;
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 14px 0; }
+
+.follow-img {
+  text-align: center;
+  padding: 20px 16px;
+  color: #3e434b; }
+  .follow-img img {
+    border-radius: 50%; }
+  .follow-img h6 {
+    margin: 11px 0 0; }
+
+.social-counts span {
+  font-size: 14px;
+  color: #737882; }
+
+.map-wrap {
+  padding: 0; }
+
+.map-fix {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 41.7%; }
+  @media (max-width: 992px) {
+    .map-fix {
+      display: none;
+      top: 17%;
+      left: 0;
+      width: 100%; } }
+  @media (max-width: 480px) {
+    .map-fix {
+      top: 24%; } }
+  @media (max-width: 365px) {
+    .map-fix {
+      top: 29.3%; } }
+
+#map {
+  height: 100%;
+  width: 100%; }
+
+/*# sourceMappingURL=style.css.map */
+
+.masthead {
+  height: 260px; padding-top: 100px;
+}
 
 #members .container {
   min-width: 100%;
