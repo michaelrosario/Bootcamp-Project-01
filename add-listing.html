@@ -58,6 +58,33 @@
             top: -11px;
             padding: 10px;
         } 
+        /* Style for the invalid fields */
+        input:invalid{
+          border-color: #900;
+          background-color: #FDD;
+        }
+
+        input:focus:invalid {
+          outline: none;
+        }
+
+        /* Style of our error messages */
+        .error {
+          width  : 100%;
+          padding: 0;
+
+          font-size: 80%;
+          color: blue;
+          background-color: #900;
+          border-radius: 0 0 5px 5px;
+
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+
+        .error.active {
+          padding: 0.3em;
+        }
     </style>
 
 </head>
@@ -165,15 +192,18 @@
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="First name">
+                                    <input type="text" class="form-control" id="firstName" placeholder="First name" required>
+                                   
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="lastName">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Last name">
+                                    <input type="text" class="form-control" id="lastName" placeholder="Last name" required>
+                                    
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="email">Email address</label>
-                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                    <label for="mail">Email address</label>
+                                    <input type="email" class="form-control" id="mail" placeholder="Enter email" required>
+                                    
                                 </div>
                             </div>
                             
@@ -183,7 +213,7 @@
                                 <div class="col-sm-12">
                                    <h6>Business Type </h6>  
                                     <label class="form-check-label" for="form-coffee">
-                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee">
+                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee" checked>
                                         Coffee Shop 
                                     </label>
                                                                     
@@ -201,7 +231,7 @@
                                             <input name="type" value="Coworking Space" class="form-check-input" type="checkbox" id="form-coworking">
                                             Coworking Space
                                     </label>
-                                            
+                                    <div id="checkbox1"></div>       
 
                                 </div>
                             </div>
@@ -210,7 +240,7 @@
                                     <h6>Available Amenities</h6>
                                 
                                     <label class="form-check-label" for="form-wifi">
-                                        <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi">
+                                        <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi" checked>
                                         Free Wi-Fi 
                                     </label>
                                 
@@ -228,7 +258,7 @@
                                         <input name="amenities" value="Food/Drink" class="form-check-input" type="checkbox" id="form-food">
                                         Food/Drink
                                     </label>
-                            
+                                    <div id="checkbox2"></div>       
 
                                 </div>
                             </div>
@@ -334,12 +364,41 @@
                 var amenities = [];
                 var firstName =  $("#firstName").val() || "";
                 var lastName = $("#lastName").val() || "";
-                var email = $("#email").val() || "";
+                //var email = $("#mail").val() || "";
+                var error = document.querySelector(".error");
+                var email = document.getElementById("mail");
+                if(!email){
+                    console.log("email check")
+                    email.addEventListener("submit", function (event) {
+                      if (email.validity.typeMismatch) {
+                        email.setCustomValidity("I expect an e-mail, darling!");
+                      } else {
+                        email.setCustomValidity("");
+                      }
+                    });
 
-                if(!email){ }
-                if(!firstName){ }
-                if(!lastName){ }
-            
+                }
+                //if(!firstName){ }
+                //if(!lastName){ }
+                
+                $('input[type="checkbox"][name="type"]').on('change',function(){
+                  var getArrVal = $('input[type="checkbox"][name="type"]:checked').map(function(){
+                    return this.value;
+                    console.log("checkebox1: " + this.value);
+                  }).toArray();
+
+                  if(getArrVal.length){
+                    //execute the code
+                    $('#check1').html(getArrVal.toString());
+
+                  } else {
+                    $(this).prop("checked",true);
+                    $('#check1').html("At least one value must be checked!");
+                    return false;
+
+                  };
+                });
+                
                 $("input[name=type]:checked").each(function(){
                     businessType.push($(this).val());
                     console.log($(this).val());
@@ -361,10 +420,9 @@
                 console.log(listingData);
 
                 // everything needs to be true
-                database.ref("/check-ins/"+id).update(listingData);
-            }
-           
-
+                //database.ref("/check-ins/"+id).update(listingData);
+            
+        }
         });
 
     </script>
