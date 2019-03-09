@@ -312,7 +312,8 @@ autocomplete.addListener('place_changed', function (event) {
 // Creating helper function to build / append pop-up window on-click //
 function createWindow(marker) {
 
-  var amenities = [];
+  
+  
   if(!marker.amenities){
     database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
       if(markerData.exists() && markerData.val().checkins) {
@@ -327,8 +328,9 @@ function createWindow(marker) {
     });
   }
 
-
+  var amenities = "";
   if(marker.amenities && marker.amenities.length){
+    amenities = '';
     for(var i = 0; i < marker.amenities.length; i++){
       if(marker.amenities[i] == "Free Wi-Fi"){
         amenities += `<span><img src="../assets/images/wifi-icon.svg" height="20" width="20"></span>`;
@@ -344,7 +346,7 @@ function createWindow(marker) {
   infowindow.setContent(`
     <div class="businessName" id="marker${marker.id}">
       <strong>${marker.name}</strong> <br>
-      ${marker.vicinity}<br>
+      <div class="address">${marker.vicinity}</div>
       <div class="price">
       ${marker.price_level && marker.price_level === 4 ? 'Prices: $$$$' : ''}
       ${marker.price_level && marker.price_level === 3 ? 'Prices: $$$<span style="opacity: 0.3">$</span>' : ''}
@@ -352,8 +354,8 @@ function createWindow(marker) {
       ${marker.price_level && marker.price_level === 1 ? 'Prices: $<span style="opacity: 0.3">$$$</span>' : ''}
       ${marker.price_level && marker.price_level === 0 ? 'Prices: <span style="opacity: 0.3">$$$$</span>' : ''}
       </div>
-      ${marker.amenities && marker.amenities.length > 0 &&
-        `<div class="amenities">${amenities}</div>`
+      ${marker.amenities && marker.amenities.length > 0 && amenities ?
+        `<div class="amenities">${amenities}</div>` : ''
       }
       <div class="rating">${marker.rating ? `<strong>${marker.rating}</strong>` : ''}</div><br>
       <div class="hours">${marker.opening_hours && marker.opening_hours.open_now ? `
@@ -365,7 +367,7 @@ function createWindow(marker) {
           <ul>
             <li><a class="checkInStatus empty" data-id="${marker.id}" data-status="empty"><img src="../assets/images/empty-icon.svg"  height="20" width="20" /></a></li>
             <li><a class="checkInStatus moderate" data-id="${marker.id}" data-status="moderate"><img src="../assets/images/moderate-icon.svg"  height="20" width="20" /.></a></li>
-            <li><a class="checkInStatus full" data-id="${marker.id}" data-status="full"><img src="../assets/images/full-icon.svg"  height="20" width="20" />>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></a></li>
+            <li><a class="checkInStatus full" data-id="${marker.id}" data-status="full"><img src="../assets/images/full-icon.svg"  height="20" width="20" /></a></li>
           </ul>
       </div>  
     </div>
@@ -585,7 +587,7 @@ $(document).on('click','a.checkInStatus',function(){
     timeStamp: new Date()
   });
 
-  $(".checkInStatus").parent().parent().html("Thank You!");
+  $(".check-in-status").html(`<span class="thanks">Thank you!</span>`)
   return false;
 
 });

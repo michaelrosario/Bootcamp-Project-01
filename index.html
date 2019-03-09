@@ -609,11 +609,12 @@
                                 <div class="featured-place-wrap">
                                     <a href="/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}&zoom=17&id=${place.id}">
                                         
-                                        <span style="background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
-                                        <img src="assets/images/featured3.jpg" style="opacity: 0;" class="img-fluid" alt="image ${i}" />
+                                        <span style="padding-top: calc(600 / 1000 * 100%); background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
+                
                                         </span>
 
-                                        <span class="featured-rating-orange">${place.rating}</span>
+                                        <span class="featured-rating-orange" title="rating">${place.rating}</span>
+
                                         <div class="featured-title-box">
                                             <h6>${place.name}</h6>
                                             <p style="text-transform: capitalize;">${place.types[0]} </p> 
