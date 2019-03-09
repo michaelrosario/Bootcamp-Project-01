@@ -312,12 +312,15 @@ autocomplete.addListener('place_changed', function (event) {
 // Creating helper function to build / append pop-up window on-click //
 function createWindow(marker) {
 
-  
-  
   if(!marker.amenities){
     database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
       if(markerData.exists() && markerData.val().checkins) {
         if(markerData.exists() && markerData.val().amenities){
+          var timeStamp = '';
+          if(markerData.val().timeStamp){
+            timeStamp = markerData.val().timeStamp;
+            marker.timeStamp = timeStamp;
+          }
           var amenities = markerData.val().amenities;
           marker.amenities = amenities;
           marker.reload = true;
@@ -327,8 +330,9 @@ function createWindow(marker) {
       }
     });
   }
-
+  
   var amenities = "";
+
   if(marker.amenities && marker.amenities.length){
     amenities = '';
     for(var i = 0; i < marker.amenities.length; i++){
@@ -342,6 +346,12 @@ function createWindow(marker) {
         amenities += `<span><img src="../assets/images/fork-knife-icon.svg" height="20" width="20"></span>`;
       }
     }
+  }
+  var checkInStatus = '';
+  console.log(marker.timeStamp);
+  if(marker.timeStamp){
+    var date = marker.timeStamp;
+    checkInStatus = `Latest check-in ${moment(date).fromNow()}`;
   }
   infowindow.setContent(`
     <div class="businessName" id="marker${marker.id}">
@@ -370,6 +380,7 @@ function createWindow(marker) {
             <li><a class="checkInStatus full" data-id="${marker.id}" data-status="full"><img src="../assets/images/full-icon.svg"  height="20" width="20" /></a></li>
           </ul>
       </div>  
+      ${checkInStatus ? `<div class="checkInStatusTime">${checkInStatus}</div>` : ""}
     </div>
   `);
 
@@ -418,7 +429,12 @@ function searchArea(place){
             
             // check for latest markers that have changed
             database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
+                
                 if(markerData.exists() && markerData.val().checkins) {
+                  var currentTimeStamp = '';
+                  if(markerData.exists() && markerData.val().timeStamp) {
+                    currentTimeStamp = markerData.val().timeStamp;
+                  }
                   var currentCounter = markerData.val().checkins;
                   var amenities = [];
                   if(markerData.exists() && markerData.val().amenities){
@@ -432,7 +448,10 @@ function searchArea(place){
                       }
                     });
                     currentMarker = latestMarkers[indexes];
-                    if(currentMarker && currentMarker.amenities) { currentMarker.amenities = amenities; }
+                    if(currentMarker && currentMarker.amenities) { 
+                      currentMarker.amenities = amenities; 
+                      currentMarker.timeStamp = currentTimeStamp;
+                    }
                     if(currentMarker){ updateMarker(currentMarker,currentCounter); }
                   }
                 }
@@ -516,6 +535,12 @@ function createMarker(place){
           } else {
             marker.amenities = [];
           }
+
+          if(snapshot.exists() && snapshot.val().timeStamp){
+            marker.timeStamp = snapshot.val().timeStamp;
+          } else {
+            marker.timeStamp = '';
+          }
           //console.log("counter",counter);
           infowindow = createWindow(marker);
 
@@ -592,18 +617,31 @@ $(document).on('click','a.checkInStatus',function(){
 
 });
 
-
 // We update any open markers
 database.ref('/check-ins/').on('child_changed', function(data) {
+  updatefromDB(data);
+});
+
+// We update any open markers 
+database.ref('/check-ins/').on('child_added', function(data) {
+  updatefromDB(data);
+});
+
+function updatefromDB(data) {
     var amenities = [];
+    var timeStamp = '';
     if(data.key){
       var counter = data.val().checkins;
       if(data.exists() && data.val().amenities){
         amenities = data.val().amenities;
       }
+      if(data.exists() && data.val().timeStamp){
+        timeStamp = data.val().timeStamp;
+      }
       if(parseInt(counter) > 0){
         // console.log("checkins changed", data.key);
-        $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
+        $("#marker"+data.key).find(".checkIn").html(`Check In`);
+        $("#marker"+data.key).find(".checkInStatusTime").html(`Someone just checked in!`);
       
         indexes = $.map(markers, function(obj, index) {
           if(obj.id == data.key) {
@@ -612,36 +650,14 @@ database.ref('/check-ins/').on('child_changed', function(data) {
         });
         
         currentMarker = markers[indexes];
-        if(currentMarker && amenities.length){ currentMarker.amenities = amenities; }
+        if(currentMarker && amenities.length){ 
+          currentMarker.amenities = amenities; 
+          currentMarker.timeStamp = timeStamp;
+        }
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
-});
-
-// We update any open markers 
-database.ref('/check-ins/').on('child_added', function(data) {
-    var amenities = [];
-    if(data.key){
-      var counter = data.val().checkins;
-      if(data.exists() && data.val().amenities && data.val().amenities.length){
-        amenities = data.val().amenities;
-      }
-      if(parseInt(counter) > 0){
-        // console.log("checkins added", data.key);
-        $("#marker"+data.key).find(".checkIn").html(`Check In [${counter}]`);
-      
-        indexes = $.map(markers, function(obj, index) {
-          if(obj.id == data.key) {
-              return index;
-          }
-        });
-        
-        currentMarker = markers[indexes];
-        if(currentMarker && amenities.length){ currentMarker.amenities = amenities; }
-        if(currentMarker){ updateMarker(currentMarker,counter); }
-      }
-    }
-});
+}
 
   // This updates the color of the marker
 function updateMarker(marker,checkins){
