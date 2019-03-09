@@ -1,0 +1,156 @@
+* { 
+    box-sizing: border-box;
+}
+.Logo { float: left; color: #FFF; width: 100%; margin: 16px 0 0 30px; max-width: 115px; }
+
+#map {
+margin-top: 62px;
+height: 100%;
+z-index: 1;
+width: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+height: 100%;
+margin: 0;
+padding: 0;
+}
+
+.get-location { 
+position: absolute;
+left: 0px;
+top: 20px;
+z-index: 9;
+color: #999;
+font-size: 20px;
+text-decoration: none;
+}
+
+.search-icon {
+right: 30px; top: 23px;
+position: absolute;
+z-index: 4;
+}
+
+header { 
+background: rgba(37,42,51,0.9);
+position: fixed; 
+top: 0px; 
+width: 100%;
+z-index: 1;
+height: 62px;
+}
+.search-container {
+float: right;
+position: relative;
+width: 50%;
+}
+#search {
+font-weight: 200;
+float: right;
+border-radius: 5px;
+width: 100%;
+padding: 0 40px 0 40px !important; 
+margin: 10px 15px 0 0;
+height: 40px; padding: 10px;
+font-size: 19px;
+z-index: 1;
+position: relative;
+}
+
+.button.checkIn {
+    margin: 10px 0 0 0;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 4px;
+    color: #FFF;
+    float: left;
+    width: 100%;
+    background:  #FF6A5C;
+}
+
+.amenities img {
+    display: inline-block;
+    margin: 5px 3px 0 3px;
+}
+
+.businessName {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1em;
+    margin-bottom: 5px;
+}
+
+.rating {
+        position: absolute;
+        right: 0px;
+        bottom: 50px;
+        height: 50px;
+        text-align: center;
+        margin: 0 10px;
+        background: #ff7474;
+        color: #fff;
+        padding: 12px;
+        border-radius: 100%;
+     }
+
+.check-in-status {
+    margin-top: 5px;
+    padding: 3px 8px;
+    border: 1px solid #999;
+    border-radius: 5px;
+    display: none;
+    float: left;
+    width: 100%;
+}
+
+.check-in-status span { 
+    width: 100%; 
+    clear: both; 
+    display: block; }
+
+.check-in-status ul { 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    float: left;
+    width: 100%;
+    max-width: 200px;
+}
+
+.check-in-status li {
+    list-style: none;
+    float: left;
+    margin: 0;
+    padding: 5px;
+    width: 33.33%;
+}
+
+.check-in-status a {
+    cursor: pointer;
+    background: orange;
+    color: white;
+    border-radius: 3px;
+    width: 100%;
+    float: left;
+    padding: 10px;
+    min-width: 10px;
+    border-radius: 1000px;
+}
+
+.check-in-status a.empty:hover  {
+    background-color: #15de15
+}
+.check-in-status a.moderate:hover  {
+    background-color: #Ff9900;
+}
+.check-in-status a.full:hover  {
+    background-color: red;
+}
+
+
+.check-in-status img {
+    width: 100%;
+    min-width: 10px;
+    float: left;
+}
