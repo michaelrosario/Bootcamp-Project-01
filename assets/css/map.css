@@ -58,9 +58,68 @@ z-index: 1;
 position: relative;
 }
 
-.button .checkIn {
-    padding: 10px;
+.button.checkIn {
+    margin: 10px 0 0 0;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
     border-radius: 4px;
     color: #FFF;
+    float: left;
+    width: 100%;
     background:  #FF6A5C;
+}
+
+.amenities img {
+    display: inline-block;
+    margin: 5px 3px 0 3px;
+}
+
+.businessName {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16pt;
+    margin-bottom: 5px;
+}
+
+.rating {
+        position: absolute;
+        right: 0px;
+        bottom: 50px;
+        height: 50px;
+        text-align: center;
+        margin: 0 10px;
+        font-size: 17px;
+        background: #ff7474;
+        color: #fff;
+        padding: 12px;
+        border-radius: 100%;
+     }
+
+
+.check-in-status {
+    display: none;
+    float: left;
+    width: 100%;
+}
+
+.check-in-status span { width: 100%; }
+
+.check-in-status ul { 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.check-in-status li {
+    list-style: none;
+    display: inline-block;
+    margin: 0;
+    padding: 5px;
+    width: 33.33%;
+}
+
+.check-in-status a {
+    background: orange;
+    color: white;
+    border-radius: 3px;
 }
