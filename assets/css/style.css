@@ -25,7 +25,7 @@ h2 {
   font-size: 47px; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     h2 {
       font-size: 34px; } }
 
@@ -40,7 +40,7 @@ h4 {
 
 h5 {
   font-size: 28px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     h5 {
       font-size: 22px; } }
 
@@ -53,7 +53,7 @@ p {
 
 .main-block {
   padding: 90px 0; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .main-block {
       padding: 45px 0; } }
 
@@ -90,7 +90,7 @@ p {
   .navbar-light .navbar-brand:hover {
     color: #fff; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       .navbar-light .navbar-nav {
         padding: 15px;
         margin-top: 25px;
@@ -112,7 +112,7 @@ p {
     color: #fff;
     outline: none; }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
   .navbar-light .navbar-toggler {
     position: absolute;
@@ -220,7 +220,7 @@ p {
 .btn-outline-light {
   padding: 10px 16px; }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .btn-outline-light {
       width: 30%; } }
   @media (max-width: 576px) {
@@ -273,7 +273,7 @@ p {
   border: none;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .btn-form {
       width: auto; } }
   @media (max-width: 576px) {
@@ -313,7 +313,7 @@ p {
 .styled-heading {
   text-align: center;
   margin: 0 0 50px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .styled-heading {
       margin: 0 0 30px; } }
   .styled-heading h3 {
@@ -333,7 +333,7 @@ p {
 
 .find-img-align {
   padding: 0 0 15px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .find-img-align {
       padding: 0; } }
 
@@ -673,8 +673,102 @@ p {
     -ms-flex: 100%;
     flex: 100%; } }
 
-    /* ==============================================================
-   FOOTER
+/* 
+   BOOKING PAGE
+   */
+/* ==============================================================
+   RESERVE A SEAT
+   ============================================================== */
+.reserve-block {
+  padding: 30px 0; }
+  .reserve-block h5 {
+    color: #3e434b;
+    font-weight: 400;
+    display: inline-block;
+    margin: 0; }
+  .reserve-block p {
+    display: inline-block;
+    font-size: 18px;
+    color: #b2b8c3;
+    font-weight: 400;
+    padding: 0 0 0 8px;
+    margin: 0 0 8px; }
+    @media (max-width: 992px) {
+      .reserve-block p {
+        margin: 0; } }
+    .reserve-block p span {
+      color: #ffb006; }
+
+.reserve-description {
+  font-size: 15px !important;
+  font-weight: 400 !important;
+  padding: 0 !important;
+  margin: 0 !important; }
+
+.reserve-seat-block {
+  text-align: right; }
+  @media (max-width: 992px) {
+    .reserve-seat-block {
+      margin: 15px 0 0; } }
+  @media (max-width: 767px) {
+    .reserve-seat-block {
+      text-align: left; } }
+  @media (max-width: 576px) {
+    .reserve-seat-block {
+      text-align: center; } }
+
+.reserve-rating {
+  font-size: 23px;
+  background: #46cd38;
+  padding: 10px 14px;
+  color: #fff;
+  border-radius: 3px;
+  display: inline-block;
+  vertical-align: top; }
+
+.review-btn {
+  display: inline-block;
+  text-align: center;
+  margin: 3px 14px 0 14px; }
+  @media (max-width: 1200px) {
+    .review-btn {
+      margin: 3px 4px 0 4px; } }
+  @media (max-width: 576px) {
+    .review-btn {
+      margin: 3px 0px 0 0px; } }
+  .review-btn span {
+    display: block;
+    color: #8a8e96;
+    font-size: 13px;
+    margin-top: 3px; }
+  .review-btn .btn-outline-danger {
+    color: #ff3a6d;
+    border-color: #ff3a6d; }
+    .review-btn .btn-outline-danger:hover {
+      color: #fff;
+      background: #ff3a6d; }
+
+.reserve-btn {
+  display: inline-block;
+  vertical-align: top; }
+  @media (max-width: 767px) {
+    .reserve-btn {
+      margin: -7px 0 0; } }
+  @media (max-width: 576px) {
+    .reserve-btn {
+      margin: 0 0 0;
+      width: 100%; } }
+
+.custom-checkbox {
+  color: #737882;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-right: 0; }
+  .custom-checkbox span {
+    padding: 0 10px 0 0; }
+
+/* ==============================================================
+   BOOKING DETAILS
    ============================================================== */
 footer {
   position: relative; }
@@ -720,4 +814,71 @@ footer {
   position: relative;
   }
 
-  
+#members .container {
+  min-width: 100%;
+}
+
+
+        .error-message { 
+            padding: 30px; 
+            border: #ff0000 solid 1px;
+            border-radius: 6px;
+        }
+
+        #add-listing label { display: none;  }
+        #add-listing input { margin: 0 0 19px 0; height: 45px; }
+        #add-listing h4 { margin: 0 0 20px 0; }
+        #add-listing h6 { margin: 0 0 20px 0; }
+
+        #business-type,
+        #amenities { border: 1px solid #CCC; 
+            width: 99%;
+            margin: 0 auto 20px;
+            padding: 20px 0 20px 0;
+            border-radius: 5px;
+        }
+
+        #business-type label,
+        #amenities label {
+            position: relative;
+            display: inline-block;
+            width: auto;
+            margin: 0;
+            padding: 0 30px 0 25px;
+            
+        }
+        #business-type input,
+        #amenities input {
+            position: absolute;
+            float: left;
+            left: 0px;
+            top: -11px;
+            padding: 10px;
+        } 
+        /* Style for the invalid fields */
+        input:invalid{
+          border-color: #900;
+          background-color: #FDD;
+        }
+
+        input:focus:invalid {
+          outline: none;
+        }
+
+        /* Style of our error messages */
+        .error {
+          width  : 100%;
+          padding: 0;
+
+          font-size: 80%;
+          color: blue;
+          background-color: #900;
+          border-radius: 0 0 5px 5px;
+
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+
+        .error.active {
+          padding: 0.3em;
+        }

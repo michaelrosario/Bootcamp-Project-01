@@ -516,7 +516,7 @@
 
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgBO7u3km3m85oAstb-On7w7m5k78g_hY&libraries=places"></script>
     <script src="https://unpkg.com/popper.js/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -544,11 +544,9 @@
                 //window.alert("No details available for input: '" + place.name + "'");
                 //return;
             } else {
-
                 window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=17&id=" + place.id;
                 console.log('place',
                     `/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}`);
-
             }
         });
 
@@ -611,11 +609,12 @@
                                 <div class="featured-place-wrap">
                                     <a href="/search/?lat=${place.geometry.location.lat()}&lang=${place.geometry.location.lng()}&zoom=17&id=${place.id}">
                                         
-                                        <span style="background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
-                                        <img src="assets/images/featured3.jpg" style="opacity: 0;" class="img-fluid" alt="image ${i}" />
+                                        <span style="padding-top: calc(600 / 1000 * 100%); background: url(${photo}) center center no-repeat; background-size: cover; display: inline-block; width: 100%;">
+                
                                         </span>
 
-                                        <span class="featured-rating-orange">${place.rating}</span>
+                                        <span class="featured-rating-orange" title="rating">${place.rating}</span>
+
                                         <div class="featured-title-box">
                                             <h6>${place.name}</h6>
                                             <p style="text-transform: capitalize;">${place.types[0]} </p> 
@@ -634,7 +633,6 @@
                                                     <p>${place.formatted_phone_number}</p>
                                                 </li>
                                             </ul>
-                                            
                                             <div class="bottom-icons">
                                                 ${place.opening_hours && place.opening_hours.open_now ? 
                                                 `<div class="open-now">Open Now</div>` : 
@@ -644,7 +642,6 @@
                                     </a>
                                 </div>
                             </div>`);                   
-
                         }
                     }
                 });
