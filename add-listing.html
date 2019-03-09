@@ -68,13 +68,9 @@
             padding: 10px;
         } 
         /* Style for the invalid fields */
-        input:invalid{
+        input.ready:invalid {
           border-color: #fff;
           background-color: #fff;
-        }
-
-        input:focus:invalid {
-          outline: none;
         }
 
         /* Style of our error messages */
@@ -198,28 +194,28 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label for="businessName">Find Your Business</label>
-                                    <input type="text" class="form-control" id="search" placeholder="Search For Your Business" required>
+                                    <input type="text" class="form-control ready" id="search" placeholder="Search For Your Business" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="col-md-12">
                                         <label for="businessName">Address</label>
-                                        <input type="text" class="form-control" id="address" placeholder="Business Name" required>
+                                        <input type="text" class="form-control ready" id="address" placeholder="Business Name" required>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name</label>
-                                    <input type="text" class="form-control" id="firstName" placeholder="First name" required>
+                                    <input type="text" class="form-control ready" id="firstName" placeholder="First name" required>
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="lastName">Last Name</label>
-                                    <input type="text" class="form-control" id="lastName" placeholder="Last name" required>
+                                    <input type="text" class="form-control ready" id="lastName" placeholder="Last name" required>
                                     
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="mail">Email address</label>
-                                    <input type="email" class="form-control" id="mail" placeholder="Enter email" required>
+                                    <input type="email" class="form-control ready" id="mail" placeholder="Enter email" required>
                                     
                                 </div>
                             </div>
@@ -230,22 +226,22 @@
                                 <div class="col-sm-12">
                                    <h6>Business Type </h6>  
                                     <label class="form-check-label" for="form-coffee">
-                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee">
+                                        <input name="type" value="Coffee Shop" class="form-check-input ready" type="checkbox" id="form-coffee">
                                         Coffee Shop 
                                     </label>
                                                                     
                                     <label class="form-check-label" for="form-restaurant">
-                                            <input name="type" value="Restaurant" class="form-check-input" type="checkbox" id="form-restaurant">
+                                            <input name="type" value="Restaurant" class="form-check-input ready" type="checkbox" id="form-restaurant">
                                             Restaurant
                                     </label>
                                                                 
                                     <label class="form-check-label" for="form-bar">
-                                            <input name="type" value="Bar" class="form-check-input" type="checkbox" id="form-bar">
+                                            <input name="type" value="Bar" class="form-check-input ready" type="checkbox" id="form-bar">
                                             Bar
                                     </label>
                                                             
                                     <label class="form-check-label" for="form-coworking">
-                                            <input name="type" value="Coworking Space" class="form-check-input" type="checkbox" id="form-coworking">
+                                            <input name="type" value="Coworking Space" class="form-check-input ready" type="checkbox" id="form-coworking">
                                             Coworking Space
                                     </label>
                                     <div id="checkbox1"></div>       
@@ -422,6 +418,10 @@
                     console.log($(this).val());
                 });
 
+                $("input").on('focus', function(){
+                    this.removeClass('ready');
+                });
+
                 $("input[name=amenities]:checked").each(function(){
                     amenities.push($(this).val());
                     console.log($(this).val());
@@ -445,7 +445,9 @@
                     $("#add-a-listing").hide();
             } else {
                 $(".error-message").fadeIn();
+				$("input.ready").removeClass("ready");
             }
+		
         });
 
     </script>
