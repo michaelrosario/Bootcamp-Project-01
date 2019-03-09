@@ -109,6 +109,7 @@ position: relative;
     display: none;
     float: left;
     width: 100%;
+    min-width: 216px;
 }
 
 .check-in-status span {
@@ -160,9 +161,19 @@ position: relative;
     background-color: red;
 }
 
-
 .check-in-status img {
     width: 100%;
     min-width: 10px;
     float: left;
+}
+
+.checkInStatusTime {
+    display: block; 
+    float: left;
+    width: 100%;
+    min-width: 179px;
+    text-align: center;
+    margin: 5px auto;
+    color: #999;
+    font-size: 11px !important;
 }
