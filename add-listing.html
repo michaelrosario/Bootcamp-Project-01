@@ -28,6 +28,15 @@
     <link rel="stylesheet" href="assets/css/style.css">
 
     <style>
+
+        .error-message { 
+            padding: 20px 20px 8px 20px; 
+            border: #ff0000 solid 1px;
+            border-radius: 6px;
+            margin: 0 0 20px 0;
+            color: red;
+        }
+
         #add-listing label { display: none;  }
         #add-listing input { margin: 0 0 19px 0; height: 45px; }
         #add-listing h4 { margin: 0 0 20px 0; }
@@ -176,24 +185,32 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                         <h4>Add Your Business</h4>
+
+                        <div class="success thanks-message" style="display: none;">
+                            <p>Thank you for filling up the form and updating your listing.</p>
+                        </div>
+
+                        <div class="error-message" style="display: none;">
+                            <p>Please fill out required fields.</p>
+                        </div>
+
                         <form id="add-a-listing">
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label for="businessName">Find Your Business</label>
-                                    <input type="text" class="form-control" id="search" placeholder="Search For Your Business">
+                                    <input type="text" class="form-control" id="search" placeholder="Search For Your Business" required>
                                 </div>
                             </div>
                             <div class="form-row">
-                                    <div class="col-md-12">
+                                <div class="col-md-12">
                                         <label for="businessName">Address</label>
-                                        <input type="text" class="form-control" id="address" placeholder="Business Name">
-                                    </div>
+                                        <input type="text" class="form-control" id="address" placeholder="Business Name" required>
                                 </div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label for="firstName">First Name</label>
                                     <input type="text" class="form-control" id="firstName" placeholder="First name" required>
-                                   
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="lastName">Last Name</label>
@@ -213,7 +230,7 @@
                                 <div class="col-sm-12">
                                    <h6>Business Type </h6>  
                                     <label class="form-check-label" for="form-coffee">
-                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee" checked>
+                                        <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee">
                                         Coffee Shop 
                                     </label>
                                                                     
@@ -240,7 +257,7 @@
                                     <h6>Available Amenities</h6>
                                 
                                     <label class="form-check-label" for="form-wifi">
-                                        <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi" checked>
+                                        <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi">
                                         Free Wi-Fi 
                                     </label>
                                 
@@ -331,9 +348,7 @@
                 return;
             } else {
                 console.log(place);
-                //window.location = './search/?lat=' + place.geometry.location.lat() + '&lang=' + place.geometry.location.lng() + "&zoom=15&id=" + place.id;
                 $("#address").val(place.formatted_address);
-                $("#website").val(place.url);
                 $("#placeId").val(place.id); 
             }
         });
@@ -352,6 +367,11 @@
 
         var database = firebase.database();
         var checkins = database.ref("/check-ins");
+
+        $("input").on("focus",function(){
+            $(".error-message").hide();
+
+        });
     
 
         $(".submit-button").on("click",function(e){
@@ -364,22 +384,20 @@
                 var amenities = [];
                 var firstName =  $("#firstName").val() || "";
                 var lastName = $("#lastName").val() || "";
-                //var email = $("#mail").val() || "";
                 var error = document.querySelector(".error");
-                var email = document.getElementById("mail");
+                var emailForm = document.getElementById("mail");
+                var email = $("#mail").val() || "";
                 if(!email){
                     console.log("email check")
-                    email.addEventListener("submit", function (event) {
+                    emailForm.addEventListener("submit", function (event) {
                       if (email.validity.typeMismatch) {
-                        email.setCustomValidity("I expect an e-mail, darling!");
+                        emailForm.setCustomValidity("I expect an e-mail, darling!");
                       } else {
-                        email.setCustomValidity("");
+                        email = $("#mail").val();
                       }
                     });
 
                 }
-                //if(!firstName){ }
-                //if(!lastName){ }
                 
                 $('input[type="checkbox"][name="type"]').on('change',function(){
                   var getArrVal = $('input[type="checkbox"][name="type"]:checked').map(function(){
@@ -417,12 +435,17 @@
                     businessType
                 }
 
-                console.log(listingData);
+            }
 
-                // everything needs to be true
-                //database.ref("/check-ins/"+id).update(listingData);
-            
-        }
+            console.log('listingData',listingData);
+
+            if(id && firstName && lastName && email && amenities.length > 0 && businessType.length > 0){
+                    database.ref("/check-ins/"+id).update(listingData);
+                    $(".thanks-message").fadeIn();
+                    $("#add-a-listing").hide();
+            } else {
+                $(".error-message").fadeIn();
+            }
         });
 
     </script>
