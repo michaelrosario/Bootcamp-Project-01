@@ -27,9 +27,42 @@
     <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/style.css">
 
+    <style>
+        #add-listing label { display: none;  }
+        #add-listing input { margin: 0 0 19px 0; height: 45px; }
+        #add-listing h4 { margin: 0 0 20px 0; }
+        #add-listing h6 { margin: 0 0 20px 0; }
+
+        #business-type,
+        #amenities { border: 1px solid #CCC; 
+            width: 99%;
+            margin: 0 auto 20px;
+            padding: 20px 0 20px 0;
+            border-radius: 5px;
+        }
+
+        #business-type label,
+        #amenities label {
+            position: relative;
+            display: inline-block;
+            width: auto;
+            margin: 0;
+            padding: 0 30px 0 25px;
+            
+        }
+        #business-type input,
+        #amenities input {
+            position: absolute;
+            float: left;
+            left: 0px;
+            top: -11px;
+            padding: 10px;
+        } 
+    </style>
+
 </head>
 
-<body>
+<body id="add-listing">
     <div class="nav-menu">
         <div class="bg transition">
             <div class="container-fluid fixed">
@@ -120,40 +153,35 @@
                             <div class="form-row">
                                 <div class="col-md-12">
                                     <label for="businessName">Find Your Business</label>
-                                    <input type="text" class="form-control" id="search" placeholder="Your Business">
+                                    <input type="text" class="form-control" id="search" placeholder="Search For Your Business">
                                 </div>
                             </div>
                             <div class="form-row">
                                     <div class="col-md-12">
                                         <label for="businessName">Address</label>
-                                        <input type="text" class="form-control" id="address" placeholder="Your Business">
+                                        <input type="text" class="form-control" id="address" placeholder="Business Name">
                                     </div>
                                 </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="firstName">First Name</label>
                                     <input type="text" class="form-control" id="firstName" placeholder="First name">
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label for="lastName">Last Name</label>
                                     <input type="text" class="form-control" id="lastName" placeholder="Last name">
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                    <div class="form-group col-md-6">
-                                            <label for="website">Website</label>
-                                            <input type="text" class="form-control" id="website" placeholder="Website">
-                                    </div>
-                                <div class="form-group col-md-6">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
+                                <div class="form-group col-md-4">
+                                    <label for="email">Email address</label>
+                                    <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email">
                                 </div>
                             </div>
+                            
                        
                                 
                             <div id="business-type" class="form-group row">
-                                <div class="col-sm-6">
-                                    Business Type  
+                                <div class="col-sm-12">
+                                   <h6>Business Type </h6>  
                                     <label class="form-check-label" for="form-coffee">
                                         <input name="type" value="Coffee Shop" class="form-check-input" type="checkbox" id="form-coffee">
                                         Coffee Shop 
@@ -174,40 +202,33 @@
                                             Coworking Space
                                     </label>
                                             
-                                    <label class="form-check-label" for="form-other-2">
-                                            <input name="type" value="Other" class="form-check-input" type="checkbox" id="form-other-2">
-                                            Other
-                                    </label>
 
                                 </div>
-                            
-                                <div id="amenities" class="col-sm-6">
-                                    Available Amenities
+                            </div>
+                            <div id="amenities" class="form-group row">
+                                <div class="col-sm-12">
+                                    <h6>Available Amenities</h6>
                                 
-                                    <label class="form-check-label" for="form-wifi"></label>
+                                    <label class="form-check-label" for="form-wifi">
                                         <input name="amenities" value="Free Wi-Fi" class="form-check-input" type="checkbox" id="form-wifi">
                                         Free Wi-Fi 
                                     </label>
                                 
-                                    <label class="form-check-label" for="form-power"></label>
+                                    <label class="form-check-label" for="form-power">
                                         <input name="amenities" value="Power Outlets" class="form-check-input" type="checkbox" id="form-power">
                                         Power Outlets
                                     </label>
                                     
-                                    <label class="form-check-label" for="form-restroom"></label>
+                                    <label class="form-check-label" for="form-restroom">
                                         <input name="amenities" value="Restrooms" class="form-check-input" type="checkbox" id="form-restroom">
                                         Restrooms
                                     </label>
                                     
-                                    <label class="form-check-label" for="form-food"></label>
+                                    <label class="form-check-label" for="form-food">
                                         <input name="amenities" value="Food/Drink" class="form-check-input" type="checkbox" id="form-food">
                                         Food/Drink
                                     </label>
-                                
-                                    <label class="form-check-label" for="form-other"></label>
-                                        <input name="amenities" value="Other" class="form-check-input" type="checkbox" id="form-other">
-                                        Other
-                                    </label>
+                            
 
                                 </div>
                             </div>
@@ -223,13 +244,6 @@
             </div>
         </div>
     </section>
-
-    <style>
-        #business-type label,
-        #amenities label {
-            display: block;
-        }
-    </style>
 
    
     <!--//END CATEGORIES -->
@@ -258,8 +272,9 @@
     <!--//Needed to reorganize my script links for the dropdown menu to work-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAoNRzL9ESfNfTSMEGMsGNnM-a2a5PemIk&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgBO7u3km3m85oAstb-On7w7m5k78g_hY&libraries=places"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="../assets/js/global.js"></script>
   
     <script>
 
@@ -270,8 +285,14 @@
 
         });
 
+
+        var options = {
+            keyword:'cafe',
+            types: ['establishment']
+        }
+
         var input = document.getElementById("search");
-        var autocomplete = new google.maps.places.Autocomplete(input);
+        var autocomplete = new google.maps.places.Autocomplete(input,options);
 
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
@@ -311,7 +332,14 @@
             if(id){
                 var businessType = [];
                 var amenities = [];
+                var firstName =  $("#firstName").val() || "";
+                var lastName = $("#lastName").val() || "";
+                var email = $("#email").val() || "";
 
+                if(!email){ }
+                if(!firstName){ }
+                if(!lastName){ }
+            
                 $("input[name=type]:checked").each(function(){
                     businessType.push($(this).val());
                     console.log($(this).val());
@@ -323,15 +351,16 @@
                 });
 
                 var listingData = {
-                    firstName: $("#firstName").val(),
-                    lastName: $("#lastName").val(),
-                    email: $("#email").val(),
-                    amenities: amenities,
-                    businessType: businessType
+                    firstName,
+                    lastName,
+                    email,
+                    amenities,
+                    businessType
                 }
 
                 console.log(listingData);
 
+                // everything needs to be true
                 database.ref("/check-ins/"+id).update(listingData);
             }
            

@@ -363,9 +363,9 @@ function createWindow(marker) {
       <div class="check-in-status">
           <span>How busy is this location?</span>
           <ul>
-            <li><a class="checkInStatus" href="../assets/images/empty-icon.svg" data-id="${marker.id}" data-status="empty">Empty</a></li>
-            <li><a class="checkInStatus" href="../assets/images/full-icon.svg" data-id="${marker.id}" data-status="moderate">Moderate</a></li>
-            <li><a class="checkInStatus" href="../assets/images/busy-icon.svg" data-id="${marker.id}" data-status="full">Full</a></li>
+            <li><a class="checkInStatus empty" data-id="${marker.id}" data-status="empty"><img src="../assets/images/empty-icon.svg"  height="20" width="20" /></a></li>
+            <li><a class="checkInStatus moderate" data-id="${marker.id}" data-status="moderate"><img src="../assets/images/moderate-icon.svg"  height="20" width="20" /.></a></li>
+            <li><a class="checkInStatus full" data-id="${marker.id}" data-status="full"><img src="../assets/images/full-icon.svg"  height="20" width="20" />>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>></a></li>
           </ul>
       </div>  
     </div>

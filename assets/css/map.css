@@ -104,24 +104,53 @@ position: relative;
     width: 100%;
 }
 
-.check-in-status span { width: 100%; }
+.check-in-status span { 
+    width: 100%; 
+    clear: both; 
+    display: block; }
 
 .check-in-status ul { 
     list-style: none;
     margin: 0;
     padding: 0;
+    float: left;
+    width: 100%;
+    max-width: 200px;
 }
 
 .check-in-status li {
     list-style: none;
-    display: inline-block;
+    float: left;
     margin: 0;
     padding: 5px;
     width: 33.33%;
 }
 
 .check-in-status a {
+    cursor: pointer;
     background: orange;
     color: white;
     border-radius: 3px;
+    width: 100%;
+    float: left;
+    padding: 10px;
+    min-width: 10px;
+    border-radius: 1000px;
+}
+
+.check-in-status a.empty:hover  {
+    background-color: #15de15
+}
+.check-in-status a.moderate:hover  {
+    background-color: #Ff9900;
+}
+.check-in-status a.full:hover  {
+    background-color: red;
+}
+
+
+.check-in-status img {
+    width: 100%;
+    min-width: 10px;
+    float: left;
 }
