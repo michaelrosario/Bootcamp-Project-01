@@ -25,7 +25,7 @@ h2 {
   font-size: 47px; 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     h2 {
       font-size: 34px; } }
 
@@ -40,7 +40,7 @@ h4 {
 
 h5 {
   font-size: 28px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     h5 {
       font-size: 22px; } }
 
@@ -53,7 +53,7 @@ p {
 
 .main-block {
   padding: 90px 0; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .main-block {
       padding: 45px 0; } }
 
@@ -90,7 +90,7 @@ p {
   .navbar-light .navbar-brand:hover {
     color: #fff; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
       .navbar-light .navbar-nav {
         padding: 15px;
         margin-top: 25px;
@@ -112,7 +112,7 @@ p {
     color: #fff;
     outline: none; }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
 
   .navbar-light .navbar-toggler {
     position: absolute;
@@ -220,7 +220,7 @@ p {
 .btn-outline-light {
   padding: 10px 16px; }
 
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .btn-outline-light {
       width: 30%; } }
   @media (max-width: 576px) {
@@ -273,7 +273,7 @@ p {
   border: none;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .btn-form {
       width: auto; } }
   @media (max-width: 576px) {
@@ -370,7 +370,7 @@ p {
 .styled-heading {
   text-align: center;
   margin: 0 0 50px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .styled-heading {
       margin: 0 0 30px; } }
   .styled-heading h3 {
@@ -390,7 +390,7 @@ p {
 
 .find-img-align {
   padding: 0 0 15px; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .find-img-align {
       padding: 0; } }
 
@@ -798,7 +798,7 @@ footer {
   @media (max-width: 992px) {
     .reserve-seat-block {
       margin: 15px 0 0; } }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .reserve-seat-block {
       text-align: left; } }
   @media (max-width: 576px) {
@@ -839,7 +839,7 @@ footer {
 .reserve-btn {
   display: inline-block;
   vertical-align: top; }
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     .reserve-btn {
       margin: -7px 0 0; } }
   @media (max-width: 576px) {
