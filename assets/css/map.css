@@ -77,14 +77,29 @@ position: relative;
     background:  #FF6A5C;
 }
 
-.amenities img {
+.amenities span {
     display: inline-block;
+    color: #E1E1E1;
     margin: 5px 3px 0 3px;
+    padding: 4px 0;
+    width: 28px;
+    text-align: center;
+    border: 1px solid #EEE;
+    border-radius: 4px;
 }
+
+.amenities span.active {
+    opacity: 1;
+    border: 1px solid #999;
+    color: #444;
+}
+
 
 .businessName {
     font-family: 'Roboto', sans-serif;
     font-size: 1em;
+    width: 219px;
+    float: left;
     margin-bottom: 5px;
 }
 
@@ -116,7 +131,7 @@ position: relative;
     display: none;
     float: left;
     width: 100%;
-    min-width: 216px;
+    max-width: 216px;
 }
 
 .check-in-status span {

@@ -18,7 +18,7 @@ $(window).scroll(function() {
   
 $('.responsiveRow').slick({
   dots: false,
-  infinite: false,
+  infinite: true,
   speed: 300,
   lazyLoad: true,
   slidesToShow: 3,
