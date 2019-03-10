@@ -247,7 +247,6 @@ function initMap() {
 autocomplete.addListener('place_changed', function (event) {
     var place = autocomplete.getPlace();
       if (!place.geometry) {
-        
           //window.alert("No details available for input: '" + place.name + "'");
           //return;
       } 
@@ -277,11 +276,9 @@ autocomplete.addListener('place_changed', function (event) {
         if (activeInfoWindow) {
           activeInfoWindow.close();
         }
-      
 
         activeInfoWindow = createWindow(marker);
     
-        
       }
 
       map.setZoom(15);
@@ -313,15 +310,15 @@ autocomplete.addListener('place_changed', function (event) {
 // Creating helper function to build / append pop-up window on-click //
 function createWindow(marker) {
 
-  if(!marker.amenities){
+  if(!marker.amenities || !marker.timeStamp){
     database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
       if(markerData.exists() && markerData.val().checkins) {
-        if(markerData.exists() && markerData.val().amenities){
-          var timeStamp = '';
-          if(markerData.val().timeStamp){
+        var timeStamp = '';
+        if(markerData.val().timeStamp){
             timeStamp = markerData.val().timeStamp;
             marker.timeStamp = timeStamp;
-          }
+        }
+        if(markerData.exists() && markerData.val().amenities){
           var amenities = markerData.val().amenities;
           marker.amenities = amenities;
           marker.reload = true;
@@ -336,17 +333,29 @@ function createWindow(marker) {
 
   if(marker.amenities && marker.amenities.length){
     amenities = '';
-    for(var i = 0; i < marker.amenities.length; i++){
-      if(marker.amenities[i] == "Free Wi-Fi"){
-        amenities += `<span><img src="../assets/images/wifi-icon.svg" height="20" width="20"></span>`;
-      } else if(marker.amenities[i] == "Power Outlets"){
-        amenities += `<span><img src="../assets/images/outlet-icon.svg" height="20" width="20"></span>`;
-      } else if(marker.amenities[i] == "Restrooms"){
-        amenities += `<span><img src="../assets/images/restrooms-icon.svg" height="20" width="20"></span>`;
-      } else if(marker.amenities[i] == "Food/Drink"){
-        amenities += `<span><img src="../assets/images/fork-knife-icon.svg" height="20" width="20"></span>`;
+      if(marker.amenities.indexOf("Free Wi-Fi")){
+        amenities += `<span class="active"><i class="fas fa-wifi"></i></span>`;
+      } else {
+        amenities += `<span><i class="fas fa-wifi"></i></span>`;
       }
-    }
+
+      if(marker.amenities.indexOf("Power Outlets")){
+        amenities += `<span class="active"><i class="fas fa-plug"></i></span>`;
+      } else {
+        amenities += `<span><i class="fas fa-plug"></i></span>`;
+      }
+      
+      if(marker.amenities.indexOf("Restrooms")){
+        amenities += `<span class="active"><i class="fas fa-toilet"></i></span>`;
+      } else {
+        amenities += `<span><i class="fas fa-toilet"></i></span>`;
+      }
+      
+      if(marker.amenities.indexOf("Food/Drink")){
+        amenities += `<span class="active"><i class="fas fa-utensils"></i></span>`;
+      } else {
+        amenities += `<span><i class="fas fa-utensils"></i></span>`;
+      }
   }
   var checkInStatus = '';
   console.log(marker.timeStamp);
@@ -451,6 +460,8 @@ function searchArea(place){
                     currentMarker = latestMarkers[indexes];
                     if(currentMarker && currentMarker.amenities) { 
                       currentMarker.amenities = amenities; 
+                    }
+                    if(currentMarker && currentMarker.timeStamp) { 
                       currentMarker.timeStamp = currentTimeStamp;
                     }
                     if(currentMarker){ updateMarker(currentMarker,currentCounter); }
@@ -585,14 +596,6 @@ $(document).on('click','a.checkIn',function(){
     $("#marker"+id).find(".checkIn").hide();
     $("#marker"+id).find(".check-in-status").show();
 
-    /*
-     database.ref("/check-ins/"+id).update({
-      id: id,
-      checkins: counter,
-      timeStamp: new Date()
-    });
-    */
-
     return false;
 
 });
@@ -653,12 +656,16 @@ function updatefromDB(data) {
         currentMarker = markers[indexes];
         if(currentMarker && amenities.length){ 
           currentMarker.amenities = amenities; 
+        }
+        if(currentMarker && currentMarker.timeStamp){ 
           currentMarker.timeStamp = timeStamp;
         }
         if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
 }
+
+var currentDay = new Date;
 
   // This updates the color of the marker
 function updateMarker(marker,checkins){
@@ -676,8 +683,10 @@ function updateMarker(marker,checkins){
         colorIdx = 1;
       }
 
+      console.log("days", currentMarker.timeStamp + " " +checkins);
+
       var color = ["#FF0000","#00FF00","#ffa500","#FF0000",];
-                  
+      
       var icon = currentMarker.getIcon();
       icon.fillColor = color[colorIdx];
       icon.strokeColor = color[colorIdx];
