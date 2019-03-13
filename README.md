@@ -1,6 +1,6 @@
 # Bootcamp-Project-01
 <h1>RIMOT</h1>
-<p>https://www.workrimot.com</p>
+<p>https://workrimot.com</p>
 
 <p>A database that allows a casual remote worker to locate a convenient places to work that provide amenities like food, outlets and wifi in their vicinity.</p>
 
