@@ -285,9 +285,7 @@ autocomplete.addListener('place_changed', function (event) {
         if (activeInfoWindow) {
           activeInfoWindow.close();
         }
-
         activeInfoWindow = createWindow(marker);
-    
       }
 
       map.setZoom(15);
@@ -367,7 +365,7 @@ function createWindow(marker) {
       }
   }
   var checkInStatus = '';
-  console.log(marker.timeStamp);
+  //console.log(marker.timeStamp);
   if(marker.timeStamp){
     var date = marker.timeStamp;
     checkInStatus = `Latest check-in ${moment(date).fromNow()}`;
@@ -447,35 +445,10 @@ function searchArea(place){
             var marker = createMarker(place);
             
             // check for latest markers that have changed
-            database.ref('/check-ins/'+marker.id).once('value').then(function(markerData) {
+            database.ref('/check-ins/'+place.id).once('value').then(function(markerData) {
                 
-                if(markerData.exists() && markerData.val().checkins) {
-                  var currentTimeStamp = '';
-                  if(markerData.exists() && markerData.val().timeStamp) {
-                    currentTimeStamp = markerData.val().timeStamp;
-                  }
-                  var currentCounter = markerData.val().checkins;
-                  var amenities = [];
-                  if(markerData.exists() && markerData.val().amenities){
-                    amenities = markerData.val().amenities;
-                  }
-                  if(parseInt(currentCounter) > 0){
-                    //console.log("place exists in DB, loading.. ."+ markerData.val().id + " " + markerData.val().checkins);
-                    indexes = $.map(latestMarkers, function(obj, index) {
-                      if(obj.id == markerData.val().id) {
-                          return index;
-                      }
-                    });
-                    currentMarker = latestMarkers[indexes];
-                    if(currentMarker && currentMarker.amenities) { 
-                      currentMarker.amenities = amenities; 
-                    }
-                    if(currentMarker && currentMarker.timeStamp) { 
-                      currentMarker.timeStamp = currentTimeStamp;
-                    }
-                    if(currentMarker){ updateMarker(currentMarker,currentCounter); }
-                  }
-                }
+              updatefromDB(markerData);
+                
             });
           }
         }
@@ -546,25 +519,26 @@ function createMarker(place){
         // check firebase for related data
         database.ref('/check-ins/' + marker.id).once('value').then(function(snapshot) {
           
-          if(snapshot.exists() && snapshot.val().checkins){
-            counter = snapshot.val().checkins;
-          } else {
-            counter = 0;
-          }
-          if(snapshot.exists() && snapshot.val().amenities){
-            marker.amenities = snapshot.val().amenities;
-          } else {
-            marker.amenities = [];
-          }
+          if(snapshot.exists()){
+            if(snapshot.val().checkins){
+              counter = snapshot.val().checkins;
+            } else {
+              counter = 0;
+            }
+            if(snapshot.val().amenities){
+              marker.amenities = snapshot.val().amenities;
+            } else {
+              marker.amenities = [];
+            }
 
-          if(snapshot.exists() && snapshot.val().timeStamp){
-            marker.timeStamp = snapshot.val().timeStamp;
-          } else {
-            marker.timeStamp = '';
+            if(snapshot.val().timeStamp){
+              marker.timeStamp = snapshot.val().timeStamp;
+            } else {
+              marker.timeStamp = '';
+            }
           }
           //console.log("counter",counter);
           infowindow = createWindow(marker);
-
 
         });
     
@@ -600,7 +574,7 @@ $(document).on('click','a.checkIn',function(){
     counter++;
     placeId = id;
 
-    updateMarker(currentMarker,counter);
+    updateMarker(currentMarker,counter,false);
 
     $("#marker"+id).find(".checkIn").hide();
     $("#marker"+id).find(".check-in-status").show();
@@ -642,15 +616,23 @@ database.ref('/check-ins/').on('child_added', function(data) {
 
 function updatefromDB(data) {
     var amenities = [];
-    var timeStamp = '';
+    var timestamp = "";
+    var counter = 0;
+    
     if(data.key){
-      var counter = data.val().checkins;
-      if(data.exists() && data.val().amenities){
+      if(data.val().checkins){
+        counter = data.val().checkins;
+      }
+      if(data.val().amenities){
         amenities = data.val().amenities;
       }
-      if(data.exists() && data.val().timeStamp){
-        timeStamp = data.val().timeStamp;
+      if(data.val().timeStamp){
+        console.log("data.val().timeStamp",data.val().timeStamp);
+        timestamp = data.val().timeStamp;
       }
+
+      console.log("counter "+counter+" "+timestamp);
+
       if(parseInt(counter) > 0){
         // console.log("checkins changed", data.key);
         $("#marker"+data.key).find(".checkIn").html(`Check In`);
@@ -663,45 +645,49 @@ function updatefromDB(data) {
         });
         
         currentMarker = markers[indexes];
-        if(currentMarker && amenities.length){ 
-          currentMarker.amenities = amenities; 
+      
+        if(currentMarker){ 
+          updateMarker(currentMarker,counter,timestamp); 
         }
-        if(currentMarker && currentMarker.timeStamp){ 
-          currentMarker.timeStamp = timeStamp;
-        }
-        if(currentMarker){ updateMarker(currentMarker,counter); }
       }
     }
 }
 
-var currentDay = new Date;
-
   // This updates the color of the marker
-function updateMarker(marker,checkins){
+function updateMarker(marker,checkins,timeStamp){
 
     if(marker){
       // console.log("updateMarker : loading marker"+ marker.id);
-      currentMarker = marker;
-    
-      var colorIdx = 1;
-      if(checkins >= 10){
-        colorIdx = 3;
-      } else if(checkins >= 5){
-        colorIdx = 2;
-      } else if(checkins >= 1){
-        colorIdx = 1;
+      console.log("marker " + marker.id + " marker.timeStamp "+timeStamp );
+      
+      var colorIdx = 4; // gray
+  
+      if(timeStamp){
+        var a = moment(new Date);
+        var b = moment(timeStamp);
+        var numOfDays = a.diff(b, 'days');
+        console.log(numOfDays+" days old");
+        if(numOfDays > 0){
+          colorIdx = 4; // if it's over 1 day, reset the color
+        } else {
+          if(checkins >= 10){
+            colorIdx = 3;
+          } else if(checkins >= 5){
+            colorIdx = 2;
+          } else if(checkins >= 1){
+            colorIdx = 1;
+          }
+        }
       }
 
-      console.log("days", currentMarker.timeStamp + " " +checkins);
-
-      var color = ["#FF0000","#00FF00","#ffa500","#FF0000",];
+      var color = ["#FF0000","#00FF00","#ffa500","#FF0000","#8FBC8F"];
       
-      var icon = currentMarker.getIcon();
+      var icon = marker.getIcon();
       icon.fillColor = color[colorIdx];
       icon.strokeColor = color[colorIdx];
       colorIdx++;
       colorIdx %= color.length;
-      currentMarker.setIcon(icon);
+      marker.setIcon(icon);
     }
 }
 
