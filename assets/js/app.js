@@ -1,11 +1,11 @@
-
+/*
 var access = localStorage.getItem('rimot');
 
 if(!access){
 
   window.location = "../development/";
 
-}
+}*/
 
 var map;
 var infowindow;

@@ -1,4 +1,5 @@
 
+/*
 var access = localStorage.getItem('rimot');
 
 if(!access){
@@ -6,6 +7,7 @@ if(!access){
   window.location = "./development/";
 
 }
+*/
 
 $(".navbar-toggler").on("click",function(){
     if($(this).hasClass("open")){
